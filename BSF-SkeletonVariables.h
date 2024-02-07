@@ -1,6 +1,6 @@
 /*==============================================================================
 Project: LiFe
-Theme: Quest (No MPI)
+Theme: Quest (MPI)
 Module: BSF-SceletonVariables.h (Skeleton Variables)
 Prefix: BSF_sv
 Author: Leonid B. Sokolinsky

@@ -1,6 +1,6 @@
 /*==============================================================================
 Project: LiFe
-Theme: Quest (No MPI)
+Theme: Quest (MPI)
 Module: Problem-Data.h (Problem Data)
 Prefix: PD
 Author: Leonid B. Sokolinsky
@@ -17,7 +17,7 @@ static bool		PD_pointIn;					// Point is inside polytope
 static int		PD_state;					// State of Job Dispatcher (see PC_bsf_JobDispatcher)
 static double	PD_objF_u;
 //========================== Problem structures ====================================
-static PT_matrix_T PD_A;					// Matrix of coefficients of inequalities
+static PT_matrix_T PD_A;					// Matrix of coefficients of inequalities 
 static PT_column_T PD_b;					// Column of the constant terms of the system Ax <= PD_b
 static PT_vector_T PD_c;					// Objective Function Coefficients
 static PT_vector_T PD_apexPoint;			// Apex point
@@ -46,7 +46,7 @@ i_k j_k A_{{i_k}{j_k}}
 static string PD_MTX_File_b; /* File of column b:
 ------------ begin of file -------------
 nor noc // nor=m (number of inequalities); noc=1
-b_1 
+b_1
 ...
 b_{nor}
 ------------ end of file----------------*/

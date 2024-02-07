@@ -1,6 +1,6 @@
 /*==============================================================================
 Project: LiFe
-Theme: Quest (No MPI)
+Theme: Quest (MPI)
 Module: Problem-Forwards.h (Problem Function Forwards)
 Author: Leonid B. Sokolinsky
 This source code has been produced with using BSF-skeleton

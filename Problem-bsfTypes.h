@@ -1,6 +1,6 @@
 /*==============================================================================
 Project: LiFe
-Theme: Quest (No MPI)
+Theme: Quest (MPI)
 Module: Problem-bsfTypes.h (Predefined BSF Problem Types)
 Prefix: PT_bsf
 Author: Leonid B. Sokolinsky
@@ -33,11 +33,11 @@ struct PT_bsf_reduceElem_T_1 {	// Type of reduce-list elements for Job 1
 
 // 2. Least projection
 struct PT_bsf_reduceElem_T_2 {	// Type of reduce-list elements for Job 2
-	PT_vector_T projection;		// Orthogonal projection onto hyperplane
-	int nonZeroCounter;			// Counter of nonzero elements
-	PT_float_T residual;		// <a,x> - b
-	bool activeTag[PP_MM];		// Tag of activity
-};
+		PT_vector_T projection;		// Orthogonal projection onto hyperplane
+		int nonZeroCounter;			// Counter of nonzero elements
+		PT_float_T residual;		// <a,x> - b
+		bool activeTag[PP_MM];		// Tag of activity
+	};
 
 struct PT_bsf_reduceElem_T_3 {	// Type of reduce-list elements for Job 3
 // Not used

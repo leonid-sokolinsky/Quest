@@ -1,6 +1,6 @@
 /*==============================================================================
 Project: LiFe
-Theme: Quest (No MPI)
+Theme: Quest (MPI)
 Module: Problem-Include.h ("Includ" Files of the Problem)
 Author: Leonid B. Sokolinsky
 This source code has been produced with using BSF-skeleton

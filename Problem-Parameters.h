@@ -1,6 +1,6 @@
 /*==============================================================================
 Project: LiFe
-Theme: Quest (No MPI)
+Theme: Quest (MPI)
 Module: Problem-Parameters.h (Problem Parameters)
 Prefix: PP
 Author: Leonid B. Sokolinsky
@@ -102,7 +102,7 @@ This source code has been produced with using BSF-skeleton
 #define PP_ADD_FLAG						PP_N
 //-------------------------- Input/Outpoot Parameters ---------------------------
 #define PP_OUTPUT_LIMIT	8	// Number of Elements to output
-#define PP_MATRIX_OUTPUT	// To output Matrix
+//#define PP_MATRIX_OUTPUT	// To output Matrix
 #define PP_SETW 14
 //------------------------- Matrix format ----------------
 #define PP_MTX_PREFIX			"lp_"

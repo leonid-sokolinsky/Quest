@@ -1,6 +1,6 @@
 /*==============================================================================
 Project: LiFe
-Theme: Quest (No MPI)
+Theme: Quest (MPI)
 Module: Problem-Types.h (BSF Types)
 Prefix: PT
 Author: Leonid B. Sokolinsky
