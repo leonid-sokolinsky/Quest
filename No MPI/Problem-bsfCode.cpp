@@ -416,7 +416,8 @@ void PC_bsf_ParametersOutput(PT_bsf_parameter_T parameter) {
 #endif
 	cout << "Before conversion: m =\t" << PP_M << "\tn = " << PP_N << endl;
 	cout << "After conversion:  m =\t" << PD_m << "\tn = " << PD_n << endl;
-	cout << "Eps Zero:\t\t" << PP_EPS_ZERO << endl;
+	cout << "Eps Zero: " << PP_EPS_ZERO << endl;
+	cout << "Eta to apex: " << PP_ETA_TO_APEX << endl;
 	cout << "--------------- Data ---------------\n";
 #ifdef PP_MATRIX_OUTPUT
 	cout << "------- Matrix PD_A & Column PD_b -------" << endl;

@@ -11,18 +11,18 @@ This source code has been produced with using BSF-skeleton
 #define PP_PATH "C:/TEMP/"
 //#define PP_PATH "D:/YandexDisk/_private/Programming/LP-Problems/"
 //#define PP_PATH "Problems/"
-//#define PP_USE_LEASTPROJECTION
+#define PP_USE_LEASTPROJECTION
 
 //=========================== Problem Parameters =========================
 
-/*============================== rnd3-0-1 LP problem ==============================*
+/*============================== rnd3-0-1 LP problem ==============================*/
 #define PP_PROBLEM_NAME	"rnd3-0-1"
 #define PP_M 4		// Number of equations (number of rows in *.mtx)
 #define PP_N 7		// Number of variables (number of cols in *.mtx)
 //------------------------------------------------------------------
 #define PP_EPS_ZERO					1E-9			// Accuracy for comparison with zero
 #define PP_INFINITY					1E+308			// Highest bound in *_hi.mtx
-#define PP_ETA_TO_APEX				1000			// Distance from apex base to apex point
+#define PP_ETA_TO_APEX				0			// Distance from apex base to apex point
 //------------------------------------------------------------------/**/
 
 /*============================== rnd3-3-1 LP problem ==============================*
@@ -85,7 +85,7 @@ This source code has been produced with using BSF-skeleton
 #define PP_ETA_TO_APEX				0			// Distance from apex base to apex point
 //------------------------------------------------------------------/**/
 
-/*============================== rnd10-10-1 LP problem ==============================*/
+/*============================== rnd10-10-1 LP problem ==============================*
 #define PP_PROBLEM_NAME	"rnd10-10-1"
 #define PP_M 20		// Number of equations (number of rows in *.mtx)
 #define PP_N 30		// Number of variables (number of cols in *.mtx)
