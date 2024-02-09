@@ -11,88 +11,128 @@ This source code has been produced with using BSF-skeleton
 #define PP_PATH "C:/TEMP/"
 //#define PP_PATH "D:/YandexDisk/_private/Programming/LP-Problems/"
 //#define PP_PATH "Problems/"
-#define PP_USE_LEASTPROJECTION
+//#define PP_USE_LEASTPROJECTION
 
 //=========================== Problem Parameters =========================
 
-/*============================== rnd3-0-1 LP problem ==============================*/
-#define PP_PROBLEM_NAME	"rnd3-0-1"
-#define PP_M 4		// Number of equations (number of rows in *.mtx)
-#define PP_N 7		// Number of variables (number of cols in *.mtx)
-//------------------------------------------------------------------
-#define PP_EPS_ZERO					1E-9			// Accuracy for comparison with zero
-#define PP_INFINITY					1E+308			// Highest bound in *_hi.mtx
-#define PP_ETA_TO_APEX				0			// Distance from apex base to apex point
-//------------------------------------------------------------------/**/
-
-/*============================== rnd3-3-1 LP problem ==============================*
-#define PP_PROBLEM_NAME	"rnd3-3-1"
-#define PP_M 6		// Number of equations (number of rows in *.mtx)
-#define PP_N 9		// Number of variables (number of cols in *.mtx)
-//------------------------------------------------------------------
-#define PP_EPS_ZERO					1E-9			// Accuracy for comparison with zero
-#define PP_INFINITY					1E+308			// Highest bound in *_hi.mtx
-#define PP_ETA_TO_APEX				1000			// Distance from apex base to apex point
-//------------------------------------------------------------------/**/
-
-/*============================== rnd4-0-1 LP problem ==============================*
-#define PP_PROBLEM_NAME	"rnd4-0-1"
-#define PP_M 5		// Number of equations (number of rows in *.mtx)
-#define PP_N 9		// Number of variables (number of cols in *.mtx)
-//------------------------------------------------------------------
-#define PP_EPS_ZERO					1E-9			// Accuracy for comparison with zero
-#define PP_INFINITY					1E+308			// Highest bound in *_hi.mtx
-#define PP_ETA_TO_APEX				1000			// Distance from apex base to apex point
-//------------------------------------------------------------------/**/
-
-/*============================== rnd4-4-1 LP problem ==============================*
-#define PP_PROBLEM_NAME	"rnd4-4-1"
-#define PP_M 8		// Number of equations (number of rows in *.mtx)
-#define PP_N 12		// Number of variables (number of cols in *.mtx)
-//------------------------------------------------------------------
-#define PP_EPS_ZERO					1E-9			// Accuracy for comparison with zero
-#define PP_INFINITY					1E+308			// Highest bound in *_hi.mtx
-#define PP_ETA_TO_APEX				1000			// Distance from apex base to apex point
-//------------------------------------------------------------------/**/
-
-/*============================== rnd5-0-1 LP problem ==============================*
-#define PP_PROBLEM_NAME	"rnd5-0-1"
+/*============================== rnd5-0 LP problem ==============================*
+#define PP_PROBLEM_NAME	"rnd5-0"
 #define PP_M 6		// Number of equations (number of rows in *.mtx)
 #define PP_N 11		// Number of variables (number of cols in *.mtx)
 //------------------------------------------------------------------
 #define PP_EPS_ZERO					1E-9			// Accuracy for comparison with zero
 #define PP_INFINITY					1E+308			// Highest bound in *_hi.mtx
-#define PP_ETA_TO_APEX				1000			// Distance from apex base to apex point
+#define PP_ETA_TO_APEX				100000			// Distance from apex base to apex point
 //------------------------------------------------------------------/**/
 
-/*============================== rnd5-5-1 LP problem ==============================*
-#define PP_PROBLEM_NAME	"rnd5-5-1"
-#define PP_M 10		// Number of equations (number of rows in *.mtx)
-#define PP_N 15		// Number of variables (number of cols in *.mtx)
+/*============================== rnd5-1-1 LP problem ==============================*
+#define PP_PROBLEM_NAME	"rnd5-1-1"
+#define PP_M 6		// Number of equations (number of rows in *.mtx)
+#define PP_N 11		// Number of variables (number of cols in *.mtx)
 //------------------------------------------------------------------
 #define PP_EPS_ZERO					1E-9			// Accuracy for comparison with zero
 #define PP_INFINITY					1E+308			// Highest bound in *_hi.mtx
-#define PP_ETA_TO_APEX				1000				// Distance from apex base to apex point
+#define PP_ETA_TO_APEX				100000			// Distance from apex base to apex point
 //------------------------------------------------------------------/**/
 
-/*============================== rnd5-5-2 LP problem ==============================*
-#define PP_PROBLEM_NAME	"rnd5-5-2"
-#define PP_M 10		// Number of equations (number of rows in *.mtx)
-#define PP_N 15		// Number of variables (number of cols in *.mtx)
+/*============================== rnd5-1-2 LP problem ==============================*
+#define PP_PROBLEM_NAME	"rnd5-1-2"
+#define PP_M 6		// Number of equations (number of rows in *.mtx)
+#define PP_N 11		// Number of variables (number of cols in *.mtx)
 //------------------------------------------------------------------
 #define PP_EPS_ZERO					1E-9			// Accuracy for comparison with zero
 #define PP_INFINITY					1E+308			// Highest bound in *_hi.mtx
-#define PP_ETA_TO_APEX				0			// Distance from apex base to apex point
+#define PP_ETA_TO_APEX				100000			// Distance from apex base to apex point
 //------------------------------------------------------------------/**/
 
-/*============================== rnd10-10-1 LP problem ==============================*
-#define PP_PROBLEM_NAME	"rnd10-10-1"
-#define PP_M 20		// Number of equations (number of rows in *.mtx)
-#define PP_N 30		// Number of variables (number of cols in *.mtx)
+/*============================== rnd5-1-3 LP problem ==============================*
+#define PP_PROBLEM_NAME	"rnd5-1-3"
+#define PP_M 6		// Number of equations (number of rows in *.mtx)
+#define PP_N 11		// Number of variables (number of cols in *.mtx)
 //------------------------------------------------------------------
 #define PP_EPS_ZERO					1E-9			// Accuracy for comparison with zero
 #define PP_INFINITY					1E+308			// Highest bound in *_hi.mtx
-#define PP_ETA_TO_APEX				0			// Distance from apex base to apex point
+#define PP_ETA_TO_APEX				100000			// Distance from apex base to apex point
+//------------------------------------------------------------------/**/
+
+/*============================== rnd5-1-4 LP problem ==============================*
+#define PP_PROBLEM_NAME	"rnd5-1-4"
+#define PP_M 6		// Number of equations (number of rows in *.mtx)
+#define PP_N 11		// Number of variables (number of cols in *.mtx)
+//------------------------------------------------------------------
+#define PP_EPS_ZERO					1E-9			// Accuracy for comparison with zero
+#define PP_INFINITY					1E+308			// Highest bound in *_hi.mtx
+#define PP_ETA_TO_APEX				100000			// Distance from apex base to apex point
+//------------------------------------------------------------------/**/
+
+/*============================== rnd5-1-5 LP problem ==============================*
+#define PP_PROBLEM_NAME	"rnd5-1-5"
+#define PP_M 6		// Number of equations (number of rows in *.mtx)
+#define PP_N 11		// Number of variables (number of cols in *.mtx)
+//------------------------------------------------------------------
+#define PP_EPS_ZERO					1E-9			// Accuracy for comparison with zero
+#define PP_INFINITY					1E+308			// Highest bound in *_hi.mtx
+#define PP_ETA_TO_APEX				100000			// Distance from apex base to apex point
+//------------------------------------------------------------------/**/
+
+/*============================== rnd10-0 LP problem ==============================*
+#define PP_PROBLEM_NAME	"rnd10-0"
+#define PP_M 11		// Number of equations (number of rows in *.mtx)
+#define PP_N 21		// Number of variables (number of cols in *.mtx)
+//------------------------------------------------------------------
+#define PP_EPS_ZERO					1E-9			// Accuracy for comparison with zero
+#define PP_INFINITY					1E+308			// Highest bound in *_hi.mtx
+#define PP_ETA_TO_APEX				1000000			// Distance from apex base to apex point
+//------------------------------------------------------------------/**/
+
+/*============================== rnd10-1-1 LP problem ==============================*
+#define PP_PROBLEM_NAME	"rnd10-1-1"
+#define PP_M 11		// Number of equations (number of rows in *.mtx)
+#define PP_N 21		// Number of variables (number of cols in *.mtx)
+//------------------------------------------------------------------
+#define PP_EPS_ZERO					1E-9			// Accuracy for comparison with zero
+#define PP_INFINITY					1E+308			// Highest bound in *_hi.mtx
+#define PP_ETA_TO_APEX				100000			// Distance from apex base to apex point
+//------------------------------------------------------------------/**/
+
+/*============================== rnd10-1-2 LP problem ==============================*
+#define PP_PROBLEM_NAME	"rnd10-1-2"
+#define PP_M 11		// Number of equations (number of rows in *.mtx)
+#define PP_N 21		// Number of variables (number of cols in *.mtx)
+//------------------------------------------------------------------
+#define PP_EPS_ZERO					1E-9			// Accuracy for comparison with zero
+#define PP_INFINITY					1E+308			// Highest bound in *_hi.mtx
+#define PP_ETA_TO_APEX				100000			// Distance from apex base to apex point
+//------------------------------------------------------------------/**/
+
+/*============================== rnd10-1-3 LP problem ==============================*
+#define PP_PROBLEM_NAME	"rnd10-1-3"
+#define PP_M 11		// Number of equations (number of rows in *.mtx)
+#define PP_N 21		// Number of variables (number of cols in *.mtx)
+//------------------------------------------------------------------
+#define PP_EPS_ZERO					1E-9			// Accuracy for comparison with zero
+#define PP_INFINITY					1E+308			// Highest bound in *_hi.mtx
+#define PP_ETA_TO_APEX				1000000			// Distance from apex base to apex point
+//------------------------------------------------------------------/**/
+
+/*============================== rnd10-1-4 LP problem ==============================*
+#define PP_PROBLEM_NAME	"rnd10-1-4"
+#define PP_M 11		// Number of equations (number of rows in *.mtx)
+#define PP_N 21		// Number of variables (number of cols in *.mtx)
+//------------------------------------------------------------------
+#define PP_EPS_ZERO					1E-9			// Accuracy for comparison with zero
+#define PP_INFINITY					1E+308			// Highest bound in *_hi.mtx
+#define PP_ETA_TO_APEX				100000			// Distance from apex base to apex point
+//------------------------------------------------------------------/**/
+
+/*============================== rnd10-1-5 LP problem ==============================*/
+#define PP_PROBLEM_NAME	"rnd10-1-5"
+#define PP_M 11		// Number of equations (number of rows in *.mtx)
+#define PP_N 21		// Number of variables (number of cols in *.mtx)
+//------------------------------------------------------------------
+#define PP_EPS_ZERO					1E-9			// Accuracy for comparison with zero
+#define PP_INFINITY					1E+308			// Highest bound in *_hi.mtx
+#define PP_ETA_TO_APEX				100000			// Distance from apex base to apex point
 //------------------------------------------------------------------/**/
 
 //================================ Common Paramrters ===========================
@@ -101,7 +141,7 @@ This source code has been produced with using BSF-skeleton
 #define PP_MAX_ITER_COUNT				10000000000 // Maximal count of iterations
 #define PP_ADD_FLAG						PP_N
 //-------------------------- Input/Outpoot Parameters ---------------------------
-#define PP_OUTPUT_LIMIT	8	// Number of Elements to output
+#define PP_OUTPUT_LIMIT	10	// Number of Elements to output
 #define PP_MATRIX_OUTPUT	// To output Matrix
 #define PP_SETW 14
 //------------------------- Matrix format ----------------

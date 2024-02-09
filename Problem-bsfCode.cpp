@@ -416,7 +416,8 @@ void PC_bsf_ParametersOutput(PT_bsf_parameter_T parameter) {
 #endif
 	cout << "Before conversion: m =\t" << PP_M << "\tn = " << PP_N << endl;
 	cout << "After conversion:  m =\t" << PD_m << "\tn = " << PD_n << endl;
-	cout << "Eps Zero:\t\t" << PP_EPS_ZERO << endl;
+	cout << "Eps Zero: " << PP_EPS_ZERO << endl;
+	cout << "Eta to apex: " << PP_ETA_TO_APEX << endl;
 	cout << "--------------- Data ---------------\n";
 #ifdef PP_MATRIX_OUTPUT
 	cout << "------- Matrix PD_A & Column PD_b -------" << endl;
@@ -520,6 +521,7 @@ void PC_bsf_IterOutput_3(PT_bsf_reduceElem_T_3* reduceResult, int reduceCounter,
 	// not used
 }
 
+// 0. Start
 void PC_bsf_ProblemOutput(PT_bsf_reduceElem_T* reduceResult, int reduceCounter, PT_bsf_parameter_T parameter, double t) {
 	ProblemOutput(t);
 }
@@ -1271,6 +1273,7 @@ inline void UnitObjVector(PT_vector_T objUnitVector) { // Calculating Objective 
 }
 
 inline void ProblemOutput(double elapsedTime) {
+	Vector_Round(PD_u);
 	cout << "=============================================" << endl;
 	cout << "Elapsed time: " << elapsedTime << endl;
 	cout << "Iterations: " << BSF_sv_iterCounter << endl;
@@ -1303,6 +1306,7 @@ inline void SkipComments(FILE* stream) {
 	};
 	fsetpos(stream, &pos);
 }
+
 inline PT_float_T PolytopeResidual(PT_vector_T x) { // Measure of distance from point to polytope
 	PT_float_T sum = 0;
 	int nonzero = 0;
