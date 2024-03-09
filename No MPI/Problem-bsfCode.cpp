@@ -332,6 +332,9 @@ void PC_bsf_JobDispatcher(
 		if (!PD_pointIn) {
 			return;
 		}
+
+		MTX_Save_x0(parameter->x);
+
 		ApexPoint(parameter->x, PD_apexPoint);
 #ifdef PP_DEBUG
 		cout << "Apex point:\t";
@@ -1167,6 +1170,30 @@ inline bool MTX_SavePoint(PT_vector_T x, const char* filename, const char* comme
 	return true;
 }
 
+static bool MTX_Save_x0(PT_vector_T x) {
+	const char* mtxFile;
+	FILE* stream;// Input stream
+
+	PD_MTX_File_sp = PP_PATH;
+	PD_MTX_File_sp += PP_MTX_PREFIX;
+	PD_MTX_File_sp += PD_problemName;
+	PD_MTX_File_sp += PP_MTX_POSTFIX_X0;
+	mtxFile = PD_MTX_File_sp.c_str();
+	stream = fopen(mtxFile, "w");
+	if (stream == NULL) {
+		if (BSF_sv_mpiRank == BSF_sv_mpiMaster)
+			cout << "Failure of opening file '" << mtxFile << "'.\n";
+		return false;
+	}
+
+	fprintf(stream, "%d %d\n", PD_n, 1);
+
+	for (int j = 0; j < PD_n; j++)
+		fprintf(stream, "%.16f\n", x[j]);
+
+	fclose(stream);
+	return true;
+}
 inline bool Vector_OnHyperplane // If the point belongs to the Hyperplane with prescigion of PP_EPS_ZERO
 (PT_vector_T point, PT_vector_T a, PT_float_T b) {
 	return fabs(Vector_DotProduct(a, point) - b) < PP_EPS_ZERO;
@@ -1331,7 +1358,7 @@ inline void ApexPoint(PT_vector_T innerPont, PT_vector_T apexPoint) {
 
 	for (int i = 0; i < PD_m; i++) {
 		a_dot_e_c = Vector_DotProduct(PD_A[i], PD_e_c);
-		if (a_dot_e_c <= -PP_EPS_ZERO) {// not recessive!
+		if (a_dot_e_c <= PP_EPS_ZERO) {// not recessive!
 			PD_recessive_tag[i] = false;
 			continue;
 		}

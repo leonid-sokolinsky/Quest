@@ -13,6 +13,7 @@ bool		Conversion();
 PT_float_T	Distance(PT_vector_T x, PT_vector_T y);
 bool		LoadMatrixFormat();
 bool		MTX_SavePoint(PT_vector_T x, const char* filename, const char* comment);
+bool		MTX_Save_x0(PT_vector_T x);
 PT_float_T	ObjF(PT_vector_T x);
 void		UnitObjVector(PT_vector_T objUnitVector);
 bool		PointInHalfspace(PT_vector_T point, PT_vector_T a, PT_float_T b);

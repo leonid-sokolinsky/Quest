@@ -7,11 +7,13 @@ Author: Leonid B. Sokolinsky
 This source code has been produced with using BSF-skeleton
 ==============================================================================*/
 
-#include "../_Problems05-1.h"
+//#include "../_Problems05-1.h"
+#include "../_Problems-NetLib-LP.h"
 
 //-------------------------- Compilation Modes -----------------------
 //#define PP_DEBUG
-#define PP_PATH "D:/YandexDisk/_private/Programming/LP-Rnd-Problems/"
+#define PP_PATH "D:/YandexDisk/_private/Programming/LP-NetLib-Problems/"
+//#define PP_PATH "D:/YandexDisk/_private/Programming/LP-Rnd-Problems/"
 //#define PP_PATH "Problems/"
 //#define PP_USE_LEASTPROJECTION
 
