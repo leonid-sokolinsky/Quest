@@ -1,5 +1,5 @@
 /*==============================================================================
-Project: LiFe
+Project: LiFe - New Linear Programming Solvers
 Theme: Quest (MPI)
 Module: BSF-Forwards.h (Problem Independent Function Forwards)
 Author: Leonid B. Sokolinsky 

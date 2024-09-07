@@ -1,5 +1,5 @@
 /*==============================================================================
-Project: LiFe
+Project: LiFe - New Linear Programming Solvers
 Theme: Quest (No MPI)
 Module: BSF-Code.cpp (Problem Independent Code)
 Prefix: BC

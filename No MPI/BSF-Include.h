@@ -1,5 +1,5 @@
 /*==============================================================================
-Project: LiFe
+Project: LiFe - New Linear Programming Solvers
 Theme: Quest (No MPI)
 Module: BSF-Include.h (Problem Independent "Include" Files)
 Author: Leonid B. Sokolinsky 

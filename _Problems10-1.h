@@ -1,5 +1,5 @@
 /*==============================================================================
-Project: LiFe
+Project: LiFe - New Linear Programming Solvers
 Theme: Quest (No MPI)
 Module: Problems10-1.h (LP problems of dimension 10 with 1 randome inequality)
 Prefix: PP
