@@ -24,7 +24,7 @@ int main(int argc, char* argv[]) {
 		cout << "Error: PC_bsf_Init failed!" << endl;
 		//
 		exit(1);
-	};
+	}
 	BD_success = true;
 	BC_Init(&BD_success);
 	//
@@ -48,8 +48,9 @@ int main(int argc, char* argv[]) {
 static void BC_Master() {// The head function of the master process.
 	PC_bsf_ParametersOutput(BD_order.parameter);
 	BD_iterCounter = 0;
-
+	PC_bsf_SetInitParameter(&(BD_order.parameter));
 	BD_t = -(double)time(NULL);
+
 	do {
 		PC_bsf_JobDispatcher(&(BD_order.parameter), &BD_newJobCase, &BD_exit, BD_t + (double)time(NULL));
 		if (BD_exit) break;
@@ -58,7 +59,7 @@ static void BC_Master() {// The head function of the master process.
 			cout << "BC_Master:Error: Job Case = " << BD_jobCase << " > PP_BSF_MAX_JOB_CASE = " << PP_BSF_MAX_JOB_CASE << endl;
 			BD_exit = BD_EXIT;
 			break;
-		};
+		}
 		BC_MasterMap(!BD_EXIT);
 		///
 		BC_WorkerMap();
@@ -156,8 +157,8 @@ static void BC_Master() {// The head function of the master process.
 	default:
 		cout << "BC_Master: Undefined job type!" << endl;
 		break;
-	};
-};
+	}
+}
 
 //
 //
@@ -248,7 +249,7 @@ static bool BC_WorkerMap() { // Performs the Map function
 	PC_bsfAssignSublistLength(BD_listSize);
 	PC_bsfAssignAddressOffset(0);
 	PC_bsfAssignParameter(BD_order.parameter);
-
+	PC_bsf_IterInit(BD_order.parameter);
 #ifdef PP_BSF_OMP
 #ifdef PP_BSF_NUM_THREADS
 #pragma omp parallel for num_threads(PP_BSF_NUM_THREADS)
@@ -285,10 +286,10 @@ static bool BC_WorkerMap() { // Performs the Map function
 		default:
 			cout << "BC_WorkerReduce Error: Undefined job type!" << endl;
 			break;
-		};
-	};
+		}
+	}
 	return !BD_EXIT;
-};
+}
 
 static void BC_WorkerReduce() {
 
@@ -312,8 +313,8 @@ static void BC_WorkerReduce() {
 	default:
 		cout << "BC_WorkerReduce Error: Undefined job type!" << endl;
 		break;
-	};
-};
+	}
+}
 
 static void BC_ProcessExtendedReduceList(BT_extendedReduceElem_T* reduceList, int length, BT_extendedReduceElem_T** extendedReduceResult_P) {
 	int firstSuccessIndex = -1;
@@ -325,8 +326,8 @@ static void BC_ProcessExtendedReduceList(BT_extendedReduceElem_T* reduceList, in
 			*extendedReduceResult_P = &reduceList[i];
 			firstSuccessIndex = i;
 			break;
-		};
-	};
+		}
+	}
 
 	if (firstSuccessIndex >= 0) {
 		for (int i = firstSuccessIndex + 1; i < length; i++)
@@ -334,9 +335,9 @@ static void BC_ProcessExtendedReduceList(BT_extendedReduceElem_T* reduceList, in
 				PC_bsf_ReduceF(&(*extendedReduceResult_P)->elem, &BD_extendedReduceList[i].elem,
 					&(*extendedReduceResult_P)->elem);
 				(*extendedReduceResult_P)->reduceCounter += BD_extendedReduceList[i].reduceCounter;
-			};
-	};
-};
+			}
+	}
+}
 
 static void BC_ProcessExtendedReduceList_1(BT_extendedReduceElem_T_1* reduceList, int length, BT_extendedReduceElem_T_1** extendedReduceResult_P) {
 	int firstSuccessIndex = -1;
@@ -348,8 +349,8 @@ static void BC_ProcessExtendedReduceList_1(BT_extendedReduceElem_T_1* reduceList
 			*extendedReduceResult_P = &reduceList[i];
 			firstSuccessIndex = i;
 			break;
-		};
-	};
+		}
+	}
 
 	if (firstSuccessIndex >= 0) {
 		for (int i = firstSuccessIndex + 1; i < length; i++)
@@ -357,9 +358,9 @@ static void BC_ProcessExtendedReduceList_1(BT_extendedReduceElem_T_1* reduceList
 				PC_bsf_ReduceF_1(&(*extendedReduceResult_P)->elem, &BD_extendedReduceList_1[i].elem,
 					&(*extendedReduceResult_P)->elem);
 				(*extendedReduceResult_P)->reduceCounter += BD_extendedReduceList_1[i].reduceCounter;
-			};
-	};
-};
+			}
+	}
+}
 
 static void BC_ProcessExtendedReduceList_2(BT_extendedReduceElem_T_2* reduceList, int length, BT_extendedReduceElem_T_2** extendedReduceResult_P) {
 	int firstSuccessIndex = -1;
@@ -371,8 +372,8 @@ static void BC_ProcessExtendedReduceList_2(BT_extendedReduceElem_T_2* reduceList
 			*extendedReduceResult_P = &reduceList[i];
 			firstSuccessIndex = i;
 			break;
-		};
-	};
+		}
+	}
 
 	if (firstSuccessIndex >= 0) {
 		for (int i = firstSuccessIndex + 1; i < length; i++)
@@ -380,9 +381,9 @@ static void BC_ProcessExtendedReduceList_2(BT_extendedReduceElem_T_2* reduceList
 				PC_bsf_ReduceF_2(&(*extendedReduceResult_P)->elem, &BD_extendedReduceList_2[i].elem,
 					&(*extendedReduceResult_P)->elem);
 				(*extendedReduceResult_P)->reduceCounter += BD_extendedReduceList_2[i].reduceCounter;
-			};
-	};
-};
+			}
+	}
+}
 
 static void BC_ProcessExtendedReduceList_3(BT_extendedReduceElem_T_3* reduceList, int length, BT_extendedReduceElem_T_3** extendedReduceResult_P) {
 	int firstSuccessIndex = -1;
@@ -394,8 +395,8 @@ static void BC_ProcessExtendedReduceList_3(BT_extendedReduceElem_T_3* reduceList
 			*extendedReduceResult_P = &reduceList[i];
 			firstSuccessIndex = i;
 			break;
-		};
-	};
+		}
+	}
 
 	if (firstSuccessIndex >= 0) {
 		for (int i = firstSuccessIndex + 1; i < length; i++)
@@ -403,9 +404,9 @@ static void BC_ProcessExtendedReduceList_3(BT_extendedReduceElem_T_3* reduceList
 				PC_bsf_ReduceF_3(&(*extendedReduceResult_P)->elem, &BD_extendedReduceList_3[i].elem,
 					&(*extendedReduceResult_P)->elem);
 				(*extendedReduceResult_P)->reduceCounter += BD_extendedReduceList_3[i].reduceCounter;
-			};
-	};
-};
+			}
+	}
+}
 
 static void BC_Init(bool* success) {// Performs the memory allocation and the initialization of the skeleton data structures and variables.
 	cout << setprecision(PP_BSF_PRECISION);
