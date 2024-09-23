@@ -200,7 +200,7 @@ void PC_bsf_ParametersOutput(PT_bsf_parameter_T parameter) {
 #endif
 
 	cout << "PP_EPS_ZERO\t\t\t" << PP_EPS_ZERO << endl;
-	cout << "PP_EPS_POINT_IN_HALFSPACE\t\t" << PP_EPS_POINT_IN_HALFSPACE << endl;
+	cout << "PP_EPS_POINT_IN_HALFSPACE\t" << PP_EPS_POINT_IN_HALFSPACE << endl;
 	cout << "PP_EPS_ON_HYPERPLANE\t\t" << PP_EPS_ON_HYPERPLANE << endl;
 	cout << "PP_ETA_TO_APEX\t\t\t" << PP_ETA_TO_APEX << endl;
 	cout << "--------------- Data ---------------\n";
@@ -835,11 +835,10 @@ namespace SF {
 		for (int i_row = 0; i_row < n_row; i_row++)
 			row[i_row].RHS_value = 0;
 
-		MPS_ReadRHS_line(stream, row, n_row, RHS_name);
-
 		fgetpos(stream, &pos);
 		ch = getc(stream);
 		while (ch == ' ') {
+			fsetpos(stream, &pos);
 			MPS_ReadRHS_line(stream, row, n_row, RHS_name);
 
 			fgetpos(stream, &pos);
@@ -962,7 +961,11 @@ namespace SF {
 	static inline void MPS_AddObjectiveFunction(PT_MPS_name_T rowName, PT_MPS_column_T* column, int n_col) {
 		for (int i_col = 0; i_col < n_col; i_col++)
 			if (MPS_SameNames(column[i_col].rowName, rowName)) {
+#ifdef MPS_MIN_OF_OBJECTIVE_FUNCTION
+				PD_c[column[i_col].j] = column[i_col].value;
+#else
 				PD_c[column[i_col].j] = -column[i_col].value;
+#endif
 			}
 	}
 
@@ -1109,17 +1112,26 @@ namespace SF {
 		float RHS_value;
 		int rowIndex;
 
-		ch = getc(stream);
-		if (ch != ' ') {
-			if (BSF_sv_mpiRank == BSF_sv_mpiMaster)
-				cout << "MPS_ReadRHS_line: Syntax error, expected ' '\n";
-			return false;
+		for (int p = 0; p < 4; p++) {
+			ch = getc(stream);
+			if (ch != ' ') {
+				if (BSF_sv_mpiRank == BSF_sv_mpiMaster)
+					cout << "MPS_ReadRHS_line: Syntax error, expected ' '\n";
+				return false;
+			}
 		}
 
-		MPS_SkipSpaces(stream);
+		int p = 0;
+		fgetpos(stream, &pos);
+		while (getc(stream) == ' ')
+			p++;
+		fsetpos(stream, &pos);
 
-		if (!MPS_ReadName(stream, next_RHS_name))
-			return false;
+		if (p > 8)
+			next_RHS_name[0] = ' ';
+		else
+			if (!MPS_ReadName(stream, next_RHS_name))
+				return false;
 
 		if (RHS_name[0] != '\0') {
 			if (!MPS_SameNames(RHS_name, next_RHS_name)) {
