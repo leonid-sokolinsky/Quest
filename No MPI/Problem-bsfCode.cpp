@@ -245,7 +245,7 @@ void PC_bsf_ProblemOutput(PT_bsf_reduceElem_T* reduceResult, int reduceCounter, 
 	else
 		cout << "u0 NOT in polytope!!! Possibly, you should decrease parameter PP_EPS_ON_HYPERPLANE.\n";
 	cout << "Distance to polytope: " << setprecision(2) << Distance_PointToPolytope(parameter.x) << endl;
-	cout << "Number of including hyperplanes: " << Number_IncludingHyperplanes(parameter.x, PP_EPS_ON_HYPERPLANE) << endl;
+	cout << "// Number of including hyperplanes: " << Number_IncludingHyperplanes(parameter.x, PP_EPS_ON_HYPERPLANE) << endl;
 	cout << "u0 on hyperplanes: "; Print_HyperplanesIncludingPoint(parameter.x, PP_EPS_ON_HYPERPLANE);
 
 } // end PC_bsf_ProblemOutput
@@ -837,6 +837,10 @@ namespace SF {
 
 		fgetpos(stream, &pos);
 		ch = getc(stream);
+		if (ch == 'B') {
+			fsetpos(stream, &pos);
+			return true;
+		}
 		while (ch == ' ') {
 			fsetpos(stream, &pos);
 			MPS_ReadRHS_line(stream, row, n_row, RHS_name);
