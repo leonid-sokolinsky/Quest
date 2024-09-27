@@ -177,11 +177,7 @@ void PC_bsf_ParametersOutput(PT_bsf_parameter_T parameter) {
 	cout << "After elimination:  m =\t" << PD_m << "\tn = " << PD_n << endl;
 #endif // PP_MPS_FORMAT
 
-#ifdef PP_MPI
 	cout << "Number of Workers: " << BSF_sv_numOfWorkers << endl;
-#else
-	cout << "No MPI" << endl;
-#endif // PP_MPI
 
 #ifdef PP_BSF_OMP
 #ifdef PP_BSF_NUM_THREADS
@@ -215,7 +211,6 @@ void PC_bsf_ParametersOutput(PT_bsf_parameter_T parameter) {
 	Print_Vector(PD_x); cout << "\tF(x) = " << setw(PP_SETW) << ObjF(PD_x) << endl;
 
 #ifdef PP_DEBUG
-	cout << "Number of including hyperplanes: " << Number_IncludingHyperplanes(parameter.x, PP_EPS_ON_HYPERPLANE) << endl;
 	cout << "x0 on hyperplanes: "; Print_HyperplanesIncludingPoint(PD_x, PP_EPS_ZERO);
 #endif // PP_DEBUG
 
@@ -231,6 +226,7 @@ void PC_bsf_ProblemOutput(PT_bsf_reduceElem_T* reduceResult, int reduceCounter, 
 	cout << "// Computed objective value: " << setprecision(16) << ObjF(parameter.x) << endl;
 	cout << "// Maximal objective value:  " << PP_MAX_OBJ_VALUE << endl;
 	cout << "// Relative error = " << setprecision(3) << RelativeError(PP_MAX_OBJ_VALUE, ObjF(parameter.x)) << setprecision(PP_SETW / 2) << endl;
+	cout << "// Number of including hyperplanes: " << Number_IncludingHyperplanes(parameter.x, PP_EPS_ON_HYPERPLANE) << endl;
 	cout << "================================================" << endl;
 
 #ifdef PP_SAVE_RESULT
