@@ -20,8 +20,8 @@ LP problems were obtained using BSF-LPP-Generator.
 
 /*============================== rnd22-1-1 LP problem ==============================*/
 #define PP_PROBLEM_NAME	"rnd22-1-1"
-#define PP_M 23		// Number of equations (number of rows in *.mtx)
-#define PP_N 45		// Number of variables (number of cols in *.mtx)
+#define PP_M 23		// Number of constraints
+#define PP_N 45		// Number of variables
 //------------------------------------------------------------------
 #define PP_EPS_CFACTOR		1E-9
 #define PP_ETA_TO_APEX		10000000	// Distance from apex base to apex point
@@ -30,8 +30,8 @@ LP problems were obtained using BSF-LPP-Generator.
 
 /*============================== rnd20-1-1 LP problem ==============================*
 #define PP_PROBLEM_NAME	"rnd20-1-1"
-#define PP_M 21		// Number of equations (number of rows in *.mtx)
-#define PP_N 41		// Number of variables (number of cols in *.mtx)
+#define PP_M 21		// Number of constraints
+#define PP_N 41		// Number of variables
 //------------------------------------------------------------------
 #define PP_EPS_ZERO					1E-9			// Accuracy for comparison with zero
 #define PP_INFINITY					1E+308			// Highest bound in *_hi.mtx
@@ -40,8 +40,8 @@ LP problems were obtained using BSF-LPP-Generator.
 
 /*============================== rnd20-1-2 LP problem ==============================*
 #define PP_PROBLEM_NAME	"rnd20-1-2"
-#define PP_M 21		// Number of equations (number of rows in *.mtx)
-#define PP_N 41		// Number of variables (number of cols in *.mtx)
+#define PP_M 21		// Number of constraints
+#define PP_N 41		// Number of variables
 //------------------------------------------------------------------
 #define PP_EPS_ZERO					1E-9			// Accuracy for comparison with zero
 #define PP_INFINITY					1E+308			// Highest bound in *_hi.mtx
@@ -50,8 +50,8 @@ LP problems were obtained using BSF-LPP-Generator.
 
 /*============================== rnd20-1-3 LP problem ==============================*
 #define PP_PROBLEM_NAME	"rnd20-1-3"
-#define PP_M 21		// Number of equations (number of rows in *.mtx)
-#define PP_N 41		// Number of variables (number of cols in *.mtx)
+#define PP_M 21		// Number of constraints
+#define PP_N 41		// Number of variables
 //------------------------------------------------------------------
 #define PP_EPS_ZERO					1E-9			// Accuracy for comparison with zero
 #define PP_INFINITY					1E+308			// Highest bound in *_hi.mtx
@@ -60,8 +60,8 @@ LP problems were obtained using BSF-LPP-Generator.
 
 /*============================== rnd20-1-4 LP problem ==============================*
 #define PP_PROBLEM_NAME	"rnd20-1-4"
-#define PP_M 21		// Number of equations (number of rows in *.mtx)
-#define PP_N 41		// Number of variables (number of cols in *.mtx)
+#define PP_M 21		// Number of constraints
+#define PP_N 41		// Number of variables
 //------------------------------------------------------------------
 #define PP_EPS_ZERO					1E-9			// Accuracy for comparison with zero
 #define PP_INFINITY					1E+308			// Highest bound in *_hi.mtx
@@ -70,8 +70,8 @@ LP problems were obtained using BSF-LPP-Generator.
 
 /*============================== rnd20-1-5 LP problem ==============================*
 #define PP_PROBLEM_NAME	"rnd20-1-5"
-#define PP_M 21		// Number of equations (number of rows in *.mtx)
-#define PP_N 41		// Number of variables (number of cols in *.mtx)
+#define PP_M 21		// Number of constraints
+#define PP_N 41		// Number of variables
 //------------------------------------------------------------------
 #define PP_EPS_ZERO					1E-9			// Accuracy for comparison with zero
 #define PP_INFINITY					1E+308			// Highest bound in *_hi.mtx

@@ -58,7 +58,7 @@ This source code has been produced with using BSF-skeleton
 #define PP_DBL_MAX				1E+308			// Highest value
 
 //-------------------------- Input/Outpoot Parameters ---------------------------
-#define PP_OUTPUT_LIMIT	8	// Number of Elements to output
+#define PP_OUTPUT_LIMIT	4 // Number of Elements to output
 #define PP_SETW 14
 //------------------------- Matrix format ----------------
 #define PP_INFINITY			1E+308		// Highest bound in *_hi.mtx

@@ -20,14 +20,14 @@ LP problems were obtained using BSF-LPP-Generator.
 
 /*============================== rnd3-0 LP problem ==============================*
 #define PP_PROBLEM_NAME	"rnd3-0"
-#define PP_M 4		// Number of equations (number of rows in *.mtx)
-#define PP_N 7		// Number of variables (number of cols in *.mtx)
+#define PP_M 4		// Number of constraints
+#define PP_N 7		// Number of variables
 //-------------------------------------------------------------------------------
 
 /*============================== rnd3-10 LP problem ==============================*
 #define PP_PROBLEM_NAME	"rnd3-10"
-#define PP_M 13		// Number of equations (number of rows in *.mtx)
-#define PP_N 16		// Number of variables (number of cols in *.mtx)
+#define PP_M 13		// Number of constraints
+#define PP_N 16		// Number of variables
 #define PP_EPS_CFACTOR		1E-9
 #define PP_ETA_TO_APEX		0	// Distance from apex base to apex point
 #define PP_MAX_OBJ_VALUE	852.028917919
@@ -35,8 +35,8 @@ LP problems were obtained using BSF-LPP-Generator.
 
 /*============================== rnd5-100 LP problem ==============================*/
 #define PP_PROBLEM_NAME	"rnd5-100"
-#define PP_M 105		// Number of equations (number of rows in *.mtx)
-#define PP_N 110		// Number of variables (number of cols in *.mtx)
+#define PP_M 105		// Number of constraints
+#define PP_N 110		// Number of variables
 #define PP_EPS_CFACTOR		1E-9
 #define PP_ETA_TO_APEX		1000000	// Distance from apex base to apex point
 #define PP_MAX_OBJ_VALUE	1848.437080587865
@@ -44,43 +44,43 @@ LP problems were obtained using BSF-LPP-Generator.
 
 /*============================== rnd5-0 LP problem ==============================*
 #define PP_PROBLEM_NAME	"rnd5-0"
-#define PP_M 6		// Number of equations (number of rows in *.mtx)
-#define PP_N 11		// Number of variables (number of cols in *.mtx)
+#define PP_M 6		// Number of constraints
+#define PP_N 11		// Number of variables
 //-------------------------------------------------------------------------------
 
 /*============================== rnd5-1-1 LP problem ============================*
 #define PP_PROBLEM_NAME	"rnd5-1-1"
-#define PP_M 6		// Number of equations (number of rows in *.mtx)
-#define PP_N 11		// Number of variables (number of cols in *.mtx)
+#define PP_M 6		// Number of constraints
+#define PP_N 11		// Number of variables
 //-------------------------------------------------------------------------------
 
 /*============================== rnd5-1-2 LP problem ============================*
 #define PP_PROBLEM_NAME	"rnd5-1-2"
-#define PP_M 6		// Number of equations (number of rows in *.mtx)
-#define PP_N 11		// Number of variables (number of cols in *.mtx)
+#define PP_M 6		// Number of constraints
+#define PP_N 11		// Number of variables
 //-------------------------------------------------------------------------------
 
 /*============================== rnd5-1-3 LP problem ============================*
 #define PP_PROBLEM_NAME	"rnd5-1-3"
-#define PP_M 6		// Number of equations (number of rows in *.mtx)
-#define PP_N 11		// Number of variables (number of cols in *.mtx)
+#define PP_M 6		// Number of constraints
+#define PP_N 11		// Number of variables
 //-------------------------------------------------------------------------------
 
 /*============================== rnd5-1-4 LP problem ============================*
 #define PP_PROBLEM_NAME	"rnd5-1-4"
-#define PP_M 6		// Number of equations (number of rows in *.mtx)
-#define PP_N 11		// Number of variables (number of cols in *.mtx)
+#define PP_M 6		// Number of constraints
+#define PP_N 11		// Number of variables
 //-------------------------------------------------------------------------------
 
 /*============================== rnd5-1-5 LP problem ============================*
 #define PP_PROBLEM_NAME	"rnd5-1-5"
-#define PP_M 6		// Number of equations (number of rows in *.mtx)
-#define PP_N 11		// Number of variables (number of cols in *.mtx)
+#define PP_M 6		// Number of constraints
+#define PP_N 11		// Number of variables
 //-------------------------------------------------------------------------------
 
 /*============================== rnd5-1-6 LP problem ============================*
 #define PP_PROBLEM_NAME	"rnd5-1-6"
-#define PP_M 6		// Number of equations (number of rows in *.mtx)
-#define PP_N 11		// Number of variables (number of cols in *.mtx)
+#define PP_M 6		// Number of constraints
+#define PP_N 11		// Number of variables
 //-------------------------------------------------------------------------------
 /*===============================================================================*/

@@ -19,8 +19,8 @@ LP problems were obtained using BSF-LPP-Generator.
 //-----------------------------------------------------------------------------
 #define PP_MAX_B_NO_CORRECT				200		// Maximum b that does not require correction
 #define PP_EPS_POINT_IN_RND_HALFSPACE	1E-2	// Precision for random inequality in PointInPolytope()
-#define PP_M 16		// Number of equations (number of rows in *.mtx)
-#define PP_N 31		// Number of variables (number of cols in *.mtx)
+#define PP_M 16		// Number of constraints
+#define PP_N 31		// Number of variables
 
 /*============================== rnd15-0 LP problem ================================*
 #define PP_PROBLEM_NAME	"rnd15-0"

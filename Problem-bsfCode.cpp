@@ -30,11 +30,19 @@ void PC_bsf_Init(bool* success) {
 #ifdef PP_MPS_FORMAT
 	* success = MPS___Load_Problem();
 #else
-	* success = MTX_Load__Problem();
+	* success = MTX__Load_Problem();
 #endif // PP_MPS_FORMAT
 
 	if (*success == false)
 		return;
+
+	PD_meq = 0;
+	for (int i = 0; i < PD_m; i++)
+		if (PD_isEquation[i])
+			PD_meq++;
+	assert(PD_meq < PD_n);
+
+	PD_neq = PD_n - PD_meq;
 
 	*success = MTX_LoadPoint(PD_x, PP_MTX_POSTFIX_Z0);
 	if (*success == false)
@@ -42,7 +50,7 @@ void PC_bsf_Init(bool* success) {
 
 	MakeColumnOfNorms(PD_A, PD_norm_a);
 
-	if (!PointBelongsPolytope(PD_x, PP_EPS_ZERO)) {
+	if (!PointBelongsPolytope(PD_x, PP_EPS_ON_HYPERPLANE)) {
 		if (BSF_sv_mpiRank == BSF_sv_mpiMaster)
 			cout << "Starting point does not belong to the feasible polytope!!!\n";
 		*success = false;
@@ -68,8 +76,7 @@ void PC_bsf_IterOutput(PT_bsf_reduceElem_T* reduceResult, int reduceCounter, PT_
 	cout << "# " << BSF_sv_iterCounter << "\tTime " << round(elapsedTime);
 	cout << "\tx =";
 	Print_Vector(parameter.x);
-	cout << "\tF(t) = " << setw(PP_SETW) << ObjF(parameter.x) << "\tDistance to M: " << setprecision(PP_BSF_PRECISION + 14) << Distance_PointToPolytope(parameter.x) << endl;
-	cout << setprecision(PP_BSF_PRECISION);
+	cout << "\tF(t) = " << setw(PP_SETW) << ObjF(parameter.x) << "\tDistance: " << Distance_PointToPolytope(parameter.x) << endl;
 }
 
 void PC_bsf_IterOutput_1(PT_bsf_reduceElem_T_1* reduceResult, int reduceCounter, PT_bsf_parameter_T parameter,
@@ -99,21 +106,19 @@ void PC_bsf_MainArguments(int argc, char* argv[]) {
 }
 
 void PC_bsf_MapF(PT_bsf_mapElem_T* mapElem, PT_bsf_reduceElem_T* reduceElem, int* success) {
+	int i = PF_MAP_LIST_INDEX;
 	int exitCode;
-	PT_vector_T r; // Orthogonal projecting vector
 
 	/*DEBUG PC_bsf_MapF**
 #ifdef PP_DEBUG
-	cout << PF_MAP_LIST_INDEX << ") ";
+	cout << i << ") ";
 #endif // PP_DEBUG /**/
 
-	OrthogonalProjectingVectorOntoHalfspace_i(BSF_sv_parameter.x, PF_MAP_LIST_INDEX, r, PP_EPS_ON_HYPERPLANE, &exitCode);
-
-	Vector_Copy(r, reduceElem->projectingVector);
+	OrthogonalProjectingVectorOntoHalfspace_i(BSF_sv_parameter.x, i, reduceElem->projectingVector, PP_EPS_ON_HYPERPLANE, &exitCode);
 
 	/*DEBUG PC_bsf_MapF**
 #ifdef PP_DEBUG
-	cout << "r = "; Print_Vector(r); cout << "\t||r|| = " << Vector_Norm(r) << "\t\t";
+	cout << "r = "; Print_Vector(reduceElem->projectingVector); cout << "\t||r|| = " << Vector_Norm(reduceElem->projectingVector) << "\t\t";
 #endif // PP_DEBUG /**/
 
 	switch (exitCode) {
@@ -177,6 +182,10 @@ void PC_bsf_ParametersOutput(PT_bsf_parameter_T parameter) {
 	cout << "After elimination:  m =\t" << PD_m << "\tn = " << PD_n << endl;
 #endif // PP_MPS_FORMAT
 
+	cout << "Number of equations: " << PD_meq << endl;
+	if (PD_meq > 0)
+		cout << "Subspace dimension: " << PD_neq << endl;
+
 	cout << "Number of Workers: " << BSF_sv_numOfWorkers << endl;
 
 #ifdef PP_BSF_OMP
@@ -202,7 +211,7 @@ void PC_bsf_ParametersOutput(PT_bsf_parameter_T parameter) {
 	cout << "--------------- Data ---------------\n";
 #ifdef PP_MATRIX_OUTPUT
 	cout << "------- Matrix PD_A & Column PD_b -------" << endl;
-	Print_Inequalities();
+	Print_Constraints();
 #endif // PP_MATRIX_OUTPUT
 	cout << "Obj Function:\t";
 	Print_Vector(PD_c);
@@ -213,6 +222,7 @@ void PC_bsf_ParametersOutput(PT_bsf_parameter_T parameter) {
 #ifdef PP_DEBUG
 	cout << "x0 on hyperplanes: "; Print_HyperplanesIncludingPoint(PD_x, PP_EPS_ZERO);
 #endif // PP_DEBUG
+	cout << "// Number of inequality hyperplanes including z0: " << Number_IncludingNeHyperplanes(PD_x, PP_EPS_ON_HYPERPLANE) << endl;
 
 	cout << "\n-------------------------------------------" << endl;
 }
@@ -226,7 +236,7 @@ void PC_bsf_ProblemOutput(PT_bsf_reduceElem_T* reduceResult, int reduceCounter, 
 	cout << "// Computed objective value: " << setprecision(16) << ObjF(parameter.x) << endl;
 	cout << "// Maximal objective value:  " << PP_MAX_OBJ_VALUE << endl;
 	cout << "// Relative error = " << setprecision(3) << RelativeError(PP_MAX_OBJ_VALUE, ObjF(parameter.x)) << setprecision(PP_SETW / 2) << endl;
-	cout << "// Number of including hyperplanes: " << Number_IncludingHyperplanes(parameter.x, PP_EPS_ON_HYPERPLANE) << endl;
+	cout << "// Number of including inequality hyperplanes: " << Number_IncludingNeHyperplanes(parameter.x, PP_EPS_ON_HYPERPLANE) << endl;
 	cout << "================================================" << endl;
 
 #ifdef PP_SAVE_RESULT
@@ -241,7 +251,7 @@ void PC_bsf_ProblemOutput(PT_bsf_reduceElem_T* reduceResult, int reduceCounter, 
 	else
 		cout << "u0 NOT in polytope!!! Possibly, you should decrease parameter PP_EPS_ON_HYPERPLANE.\n";
 	cout << "Distance to polytope: " << setprecision(2) << Distance_PointToPolytope(parameter.x) << endl;
-	cout << "// Number of including hyperplanes: " << Number_IncludingHyperplanes(parameter.x, PP_EPS_ON_HYPERPLANE) << endl;
+	cout << "// Number of including inequality hyperplanes: " << Number_IncludingNeHyperplanes(parameter.x, PP_EPS_ON_HYPERPLANE) << endl;
 	cout << "u0 on hyperplanes: "; Print_HyperplanesIncludingPoint(parameter.x, PP_EPS_ON_HYPERPLANE);
 
 } // end PC_bsf_ProblemOutput
@@ -345,6 +355,18 @@ void PC_bsfAssignSublistLength(int value) { BSF_sv_sublistLength = value; }
 //---------------------------------- Shared Functions -------------------------
 namespace SF {
 
+	static inline unsigned long long BinomialCoefficient(int n, int k) { // https://habr.com/ru/articles/274689/
+		unsigned long long res = 1;
+		if (k > n / 2) k = n - k;
+		if (k == 1)  return n;
+		if (k == 0)  return 1;
+		for (int i = 1; i <= k; ++i) {
+			res *= n - k + i;
+			res /= i;
+		}
+		return res;
+	}
+
 	static inline double Distance_PointToHalfspace_i(PT_vector_T x, int i) {
 		double a_DoT_z_MinuS_b = Vector_DotProduct(PD_A[i], x) - PD_b[i];
 
@@ -402,6 +424,8 @@ namespace SF {
 		Vector_Zeroing(o_min);
 
 		for (int i = 0; i < PD_m; i++) {
+			if (PD_isEquation[i])
+				continue;
 			location_z = PointLocation_i(z, i, eps, &a_DoT_z_MinuS_b);
 			assert(location_z != PP_DEGENERATE_INEQUALITY);
 
@@ -447,12 +471,15 @@ namespace SF {
 			notIncludingHalfspacesList[mo] = -1;
 	}
 
-	static inline void MakePointHyperplaneList(PT_vector_T u, int* pointHyperplaneList, int* mh, double eps) {
-		*mh = 0;
+	static inline void MakeNeHyperplaneList(PT_vector_T u, int* pointHyperplaneList, int* mneh, double eps) {
+		// List of hyperplanes that are not equations and include point u.
+		*mneh = 0;
 		for (int i = 0; i < PD_m; i++) {
+			if (PD_isEquation[i])
+				continue;
 			if (PointBelongsHyperplane_i(u, i, eps)) {
-				pointHyperplaneList[*mh] = i;
-				(*mh)++;
+				pointHyperplaneList[*mneh] = i;
+				(*mneh)++;
 			}
 		}
 	}
@@ -525,6 +552,7 @@ namespace SF {
 		int n_row = 0;
 		int n_col = 0;
 		int n_up = 0;
+		int n_fx = 0;
 
 		PT_MPS_row_T* rows = (PT_MPS_row_T*)calloc(PP_MAX_NUMBER_OF_ROWS, sizeof(PT_MPS_row_T));
 		if (rows == NULL) {
@@ -551,6 +579,13 @@ namespace SF {
 		if (rows == NULL) {
 			if (BSF_sv_mpiRank == BSF_sv_mpiMaster)
 				cout << "MPS___Load_Problem error: Can't allocate memory for array 'upBounds'.\n";
+			return false;
+		}
+
+		PT_MPS_fxVariable_T* fxVariables = (PT_MPS_fxVariable_T*)calloc(PP_N, sizeof(PT_MPS_fxVariable_T));
+		if (rows == NULL) {
+			if (BSF_sv_mpiRank == BSF_sv_mpiMaster)
+				cout << "MPS___Load_Problem error: Can't allocate memory for array 'fxVariables'.\n";
 			return false;
 		}
 
@@ -613,7 +648,7 @@ namespace SF {
 		MPS__SkipComment(stream);
 
 		if (MPS__ReadKeyWord(stream, &word, "BOUNDS"))
-			if (!MPS__ReadBounds(stream, columns, n_col, loBounds, upBounds, &n_up))
+			if (!MPS__ReadBounds(stream, columns, n_col, loBounds, upBounds, &n_up, fxVariables, &n_fx))
 				return false;
 
 		MPS__SkipComment(stream);
@@ -624,7 +659,7 @@ namespace SF {
 			return false;
 		}
 
-		if (!MPS__MakeProblem(rows, n_row, columns, n_col, loBounds, upBounds, n_up))
+		if (!MPS__MakeProblem(rows, n_row, columns, n_col, loBounds, upBounds, n_up, fxVariables, n_fx))
 			return false;
 
 		free(rows);
@@ -635,7 +670,7 @@ namespace SF {
 	}
 
 	static inline bool MPS__MakeProblem(PT_MPS_row_T* row, int n_row, PT_MPS_column_T* column, int n_col, double* loBound,
-		PT_MPS_upBound_T* upBound, int n_up)
+		PT_MPS_upBound_T* upBound, int n_up, PT_MPS_fxVariable_T* fxVariable, int n_fx)
 	{
 		PD_m = 0;
 
@@ -643,6 +678,7 @@ namespace SF {
 			for (int j = 0; j < PP_N; j++)
 				PD_A[i][j] = 0;
 			PD_b[i] = 0;
+			PD_isEquation[i] = false;
 		}
 
 		for (int j = 0; j < PP_N; j++)
@@ -651,16 +687,20 @@ namespace SF {
 		for (int i_row = 0; i_row < n_row; i_row++) {
 			switch (row[i_row].type) {
 			case 'E':
-				MPS_AddEquation(row[i_row].name, row[i_row].RHS_value, column, n_col);
+				if (!MPS_AddEquation(row[i_row].name, row[i_row].RHS_value, column, n_col))
+					return false;
 				break;
 			case 'G':
-				MPS_AddInequality_G(row[i_row].name, row[i_row].RHS_value, column, n_col);
+				if (!MPS_AddInequality_G(row[i_row].name, row[i_row].RHS_value, column, n_col))
+					return false;
 				break;
 			case 'L':
-				MPS_AddInequality_L(row[i_row].name, row[i_row].RHS_value, column, n_col);
+				if (!MPS_AddInequality_L(row[i_row].name, row[i_row].RHS_value, column, n_col))
+					return false;
 				break;
 			case 'N':
-				MPS_AddObjectiveFunction(row[i_row].name, column, n_col);
+				if (!MPS_AddObjectiveFunction(row[i_row].name, column, n_col))
+					return false;
 				break;
 			default:
 				if (BSF_sv_mpiRank == BSF_sv_mpiMaster)
@@ -683,23 +723,19 @@ namespace SF {
 			assert(PD_m <= PP_MM);
 		}
 
+		for (int j_fx = 0; j_fx < n_fx; j_fx++) { // Adding fixed variables
+			PD_A[PD_m + j_fx][fxVariable[j_fx].varIndex] = 1;
+			PD_b[PD_m + j_fx] = fxVariable[j_fx].value;
+			PD_isEquation[PD_m + j_fx] = true;
+			PD_m++;
+			assert(PD_m <= PP_MM);
+		}
+
 		return true;
 	}
 
-	static inline void MPS_AddEquation(PT_MPS_name_T rowName, double RHS_value, PT_MPS_column_T* column, int n_col) {
-		for (int i_col = 0; i_col < n_col; i_col++)
-			if (MPS_SameNames(column[i_col].rowName, rowName)) {
-				PD_A[PD_m][column[i_col].j] = column[i_col].value;
-				PD_A[PD_m + 1][column[i_col].j] = -column[i_col].value;
-			}
-		PD_b[PD_m] = RHS_value;
-		PD_b[PD_m + 1] = -RHS_value;
-		PD_m += 2;
-		assert(PD_m < PP_MM);
-	}
-
 	static inline bool MPS__ReadBounds(FILE* stream, PT_MPS_column_T* column, int n_col, double* loBound,
-		PT_MPS_upBound_T* upBound, int* n_up)
+		PT_MPS_upBound_T* upBound, int* n_up, PT_MPS_fxVariable_T* fxVariable, int* n_fx)
 	{
 		char ch, typeCh1, typeCh2;
 		PT_MPS_name_T baundName;
@@ -708,7 +744,8 @@ namespace SF {
 		double boundValue;
 		fpos_t pos;	// Position in the input stream
 
-		*n_up = 0;
+		assert(*n_up == 0);
+		assert(*n_fx == 0);
 
 		for (int j_lo = 0; j_lo < PD_n; j_lo++)
 			loBound[j_lo] = 0;
@@ -753,6 +790,11 @@ namespace SF {
 				upBound[*n_up].value = boundValue;
 				upBound[*n_up].varIndex = j_var;
 				(*n_up)++;
+				break;
+			case 'F':
+				fxVariable[*n_fx].value = boundValue;
+				fxVariable[*n_fx].varIndex = j_var;
+				(*n_fx)++;
 				break;
 			default:
 				if (BSF_sv_mpiRank == BSF_sv_mpiMaster)
@@ -938,35 +980,73 @@ namespace SF {
 		fsetpos(stream, &pos);
 	}
 
-	static inline void MPS_AddInequality_G(PT_MPS_name_T rowName, double RHS_value, PT_MPS_column_T* column, int n_col) {
+	static inline bool MPS_AddEquation(PT_MPS_name_T rowName, double RHS_value, PT_MPS_column_T* column, int n_col) {
 		for (int i_col = 0; i_col < n_col; i_col++)
 			if (MPS_SameNames(column[i_col].rowName, rowName)) {
+				if (!PD_A[PD_m][column[i_col].j] == 0) {
+					if (BSF_sv_mpiRank == BSF_sv_mpiMaster)
+						cout << "MPS_AddEquation error: Coefficient redefinition of the variable " << column[i_col].varName
+						<< " in row " << column[i_col].rowName << ".\n";
+					return false;
+				}
+				PD_A[PD_m][column[i_col].j] = column[i_col].value;
+			}
+		PD_b[PD_m] = RHS_value;
+		PD_isEquation[PD_m] = true;
+		PD_m++;
+		assert(PD_m < PP_MM);
+		return true;
+	}
+
+	static inline bool MPS_AddInequality_G(PT_MPS_name_T rowName, double RHS_value, PT_MPS_column_T* column, int n_col) {
+		for (int i_col = 0; i_col < n_col; i_col++)
+			if (MPS_SameNames(column[i_col].rowName, rowName)) {
+				if (!PD_A[PD_m][column[i_col].j] == 0) {
+					if (BSF_sv_mpiRank == BSF_sv_mpiMaster)
+						cout << "MPS_AddInequality_G error: Coefficient redefinition of the variable " << column[i_col].varName
+						<< " in row " << column[i_col].rowName << ".\n";
+					return false;
+				}
 				PD_A[PD_m][column[i_col].j] = -column[i_col].value;
 			}
 		PD_b[PD_m] = -RHS_value;
 		PD_m++;
 		assert(PD_m < PP_MM);
+		return true;
 	}
 
-	static inline void MPS_AddInequality_L(PT_MPS_name_T rowName, double RHS_value, PT_MPS_column_T* column, int n_col) {
+	static inline bool MPS_AddInequality_L(PT_MPS_name_T rowName, double RHS_value, PT_MPS_column_T* column, int n_col) {
 		for (int i_col = 0; i_col < n_col; i_col++)
 			if (MPS_SameNames(column[i_col].rowName, rowName)) {
+				if (!PD_A[PD_m][column[i_col].j] == 0) {
+					if (BSF_sv_mpiRank == BSF_sv_mpiMaster)
+						cout << "MPS_AddInequality_L error: Coefficient redefinition of the variable " << column[i_col].varName
+						<< " in row " << column[i_col].rowName << ".\n";
+					return false;
+				}
 				PD_A[PD_m][column[i_col].j] = column[i_col].value;
 			}
 		PD_b[PD_m] = RHS_value;
 		PD_m++;
 		assert(PD_m <= PP_MM);
+		return true;
 	}
 
-	static inline void MPS_AddObjectiveFunction(PT_MPS_name_T rowName, PT_MPS_column_T* column, int n_col) {
+	static inline bool MPS_AddObjectiveFunction(PT_MPS_name_T rowName, PT_MPS_column_T* column, int n_col) {
 		for (int i_col = 0; i_col < n_col; i_col++)
 			if (MPS_SameNames(column[i_col].rowName, rowName)) {
+				if (!PD_c[column[i_col].j] == 0) {
+					if (BSF_sv_mpiRank == BSF_sv_mpiMaster)
+						cout << "MPS_AddObjectiveFunction error: Coefficient redefinition of the objective function for " << column[i_col].varName << ".\n";
+					return false;
+				}
 #ifdef MPS_MIN_OF_OBJECTIVE_FUNCTION
 				PD_c[column[i_col].j] = column[i_col].value;
 #else
 				PD_c[column[i_col].j] = -column[i_col].value;
 #endif
 			}
+		return true;
 	}
 
 	static inline void MPS_CopyName(char* name_x, char* name_y) {
@@ -1306,24 +1386,12 @@ namespace SF {
 		return true;
 	}
 
-	static void MTX_Conversion() { // Transformation to inequalities & dimensionality reduction
-		int m_equation = PD_m;
-		int m_inequality;
-		int m_lowerBound;
-		int m_higherBound;
+	static void MTX_Conversion() { // Removing free variables
 
-		for (int i = 0; i < m_equation; i++) { // Conversion to inequalities
-			for (int j = 0; j < PD_n; j++)
-				PD_A[PD_m][j] = -PD_A[i][j];
-			PD_b[PD_m] = -PD_b[i];
-			PD_m++; assert(PD_m <= PP_MM);
-		}
+		for (int i = 0; i < PD_m; i++)
+			PD_isEquation[i] = true;
 
-		for (int i = 0; i < PD_m; i++) // Remove negative sign for zero value
-			for (int j = 0; j < PD_n; j++)
-				if (PD_A[i][j] == 0)
-					PD_A[i][j] = 0;
-		m_inequality = PD_m;
+		MTX_RemoveFreeVariables();
 
 		for (int i = 0; i < PD_n; i++) { // Adding lower bound conditions
 			for (int j = 0; j < PD_n; j++)
@@ -1335,7 +1403,6 @@ namespace SF {
 				PD_b[i + PD_m] = -PD_lo[i];
 		}
 		PD_m += PD_n; assert(PD_m <= PP_MM);
-		m_lowerBound = PD_m;
 
 		for (int i = 0; i < PD_n; i++) { // Adding higher bound conditions
 			if (PD_hi[i] != PP_INFINITY) {
@@ -1346,23 +1413,15 @@ namespace SF {
 				PD_m++; assert(PD_m <= PP_MM);
 			}
 		}
-		m_higherBound = PD_m;
 
 		/**
 		cout << "-----------------------------------------------------\n";
-		Print_Inequalities();
+		Print_Constraints();
 		cout << "-----------------------------------------------------\n";
 		cout << "PD_c: "; Print_Vector(PD_c); cout << endl;/**/
-
-		MTX_RemoveFreeVariables(m_equation, m_inequality, m_lowerBound, m_higherBound);
-
-		/**
-		cout << "-----------------------------------------------------\n";
-		Print_Inequalities();
-		cout << "-----------------------------------------------------\n";/**/
 	}
 
-	static bool MTX_Load__Problem() {
+	static bool MTX__Load_Problem() {
 
 		//--------------- Reading A ------------------
 		if (!MTX_Load_A())
@@ -1389,7 +1448,7 @@ namespace SF {
 
 		/**
 		cout << "-----------------------------------------------------\n";
-		Print_Inequalities();
+		Print_Constraints();
 		cout << "-----------------------------------------------------\n";
 		cout << "PD_c: "; Print_Vector(PD_c); cout << endl;/**/
 
@@ -1447,9 +1506,9 @@ namespace SF {
 		PD_m = nor;
 		PD_n = noc;
 
-		if (2 * nor + noc > PP_MM) {
+		if (nor + noc > PP_MM) {
 			if (BSF_sv_mpiRank == BSF_sv_mpiMaster)
-				cout << "Invalid input data: number of inequalities m = " << 2 * nor + noc
+				cout << "Invalid input data: number of constraints m = " << nor + noc
 				<< " must be < PP_MM + 1 =" << PP_MM + 1 << "\n";
 			return false;
 		}
@@ -1750,25 +1809,27 @@ namespace SF {
 		return true;
 	}
 
-	static inline void MTX_RemoveFreeVariables(int m_equation, int m_inequality, int m_lowerBound, int m_higherBound) {
+	static inline void MTX_RemoveFreeVariables(void) {
 		int freeVariable_j_col[PP_M];
 		int m_freeVariable_j_col = 0;
-		int rowToDelete_i[PP_MM];
-		int m_rowToDelete = 0;
 		bool unique;
-		bool ok;
 
 		// Find free variables
 		for (int j_col = 0; j_col < PD_n; j_col++) { // Find zero element in PD_c
 			if (PD_c[j_col] != 0)
 				continue;
-			for (int i_row = 0; i_row < m_equation; i_row++) { // Find PD_A i_row with nonzero element in column j_col
+			if (PD_lo[j_col] != 0)
+				continue;
+			if (PD_hi[j_col] != PP_INFINITY)
+				continue;
+
+			for (int i_row = 0; i_row < PD_m; i_row++) { // Find PD_A i_row with nonzero element in column j_col
 				if (PD_A[i_row][j_col] == 0)
 					continue;
 
 				// Check uniqueness in column j_col
 				unique = true;
-				for (int i = 0; i < m_equation; i++) {
+				for (int i = 0; i < PD_m; i++) {
 					if (i == i_row)
 						continue;
 					if (PD_A[i][j_col] != 0) {
@@ -1779,42 +1840,9 @@ namespace SF {
 				if (!unique)
 					continue;
 
-				// Check lower bound
-				ok = true;
-				for (int i_lowerBound = m_inequality; i_lowerBound < m_lowerBound; i_lowerBound++) {
-					if (PD_A[i_lowerBound][j_col] == 0)
-						continue;
-					if (PD_A[i_lowerBound][j_col] != -1) {
-						ok = false;
-						break;
-					}
-					if (PD_b[i_lowerBound] != 0) {
-						ok = false;
-						break;
-					}
-					rowToDelete_i[m_rowToDelete] = i_lowerBound;
-					m_rowToDelete++; assert(m_rowToDelete <= PP_MM);
-					break;
-				}
-				if (!ok)
-					continue;
-
-				// Check higher bound
-				ok = true;
-				for (int i_higherBound = m_lowerBound; i_higherBound < m_higherBound; i_higherBound++) {
-					if (PD_A[i_higherBound][j_col] != 0) {
-						ok = false;
-						m_rowToDelete--;
-						break;
-					}
-				}
-				if (!ok)
-					continue;
-
 				freeVariable_j_col[m_freeVariable_j_col] = j_col;
 				m_freeVariable_j_col++; assert(m_freeVariable_j_col <= PP_M);
-				rowToDelete_i[m_rowToDelete] = m_equation + i_row;
-				m_rowToDelete++; assert(m_rowToDelete <= PP_MM);
+
 				// Check sign of free variable
 				if (PD_A[i_row][j_col] < 0) {
 					// Change sign of inequality
@@ -1822,6 +1850,9 @@ namespace SF {
 						PD_A[i_row][j] = -PD_A[i_row][j];
 					PD_b[i_row] = -PD_b[i_row];
 				}
+
+				PD_isEquation[i_row] = false;
+
 				break;
 			}
 		}
@@ -1844,30 +1875,7 @@ namespace SF {
 
 					/**
 					cout << "-----------------------------------------------------\n";
-					Print_Inequalities();
-					cout << "-----------------------------------------------------\n";/**/
-
-				}
-			}
-		}
-
-		{// Eliminate rows corresponding to free variables
-			static bool rowToDeleteLable[PP_MM];
-			for (int i = 0; i < m_rowToDelete; i++) {
-				rowToDeleteLable[rowToDelete_i[i]] = true;
-			}
-			for (int i = 0; i < PD_m; i++) {
-				if (rowToDeleteLable[i]) {
-					for (int j = 0; j < PD_n; j++)
-						PD_A[i][j] = PD_A[PD_m - 1][j];
-					PD_b[i] = PD_b[PD_m - 1];
-					rowToDeleteLable[i] = rowToDeleteLable[PD_m - 1];
-					i--; assert(i >= 0);
-					PD_m--; assert(PD_m >= 0);
-
-					/**
-					cout << "-----------------------------------------------------\n";
-					Print_Inequalities();
+					Print_Constraints();
 					cout << "-----------------------------------------------------\n";/**/
 				}
 			}
@@ -1913,10 +1921,12 @@ namespace SF {
 		fsetpos(stream, &pos);
 	}
 
-	static inline int Number_IncludingHyperplanes(PT_vector_T x, double eps) {
+	static inline int Number_IncludingNeHyperplanes(PT_vector_T x, double eps) {
 		int number = 0;
 
 		for (int i = 0; i < PD_m; i++) {
+			if (PD_isEquation[i])
+				continue;
 			if (PointBelongsHyperplane_i(x, i, eps))
 				number++;
 		}
@@ -1997,11 +2007,12 @@ namespace SF {
 			return;
 		}
 
-		if (a_DoT_z_MinuS_b < 0) { // <a,z> - b < 0
-			Vector_Zeroing(r);
-			*exitCode = PP_INSIDE_HALFSPACE;
-			return;
-		}
+		if (!PD_isEquation[i])
+			if (a_DoT_z_MinuS_b < 0) { // <a,z> - b < 0
+				Vector_Zeroing(r);
+				*exitCode = PP_INSIDE_HALFSPACE;
+				return;
+			}
 
 		factor = -a_DoT_z_MinuS_b / (PD_norm_a[i] * PD_norm_a[i]); // (b - <z,a>) / ||a||^2
 		Vector_MultiplyByNumber(PD_A[i], factor, r); // r = a(b - <z,a>) / ||a||^2
@@ -2020,6 +2031,8 @@ namespace SF {
 		double distanceToHyperplane = fabs(a_DoT_x_MinuS_b) / PD_norm_a[i];
 		if (distanceToHyperplane < eps)
 			return true;
+		if (PD_isEquation[i])
+			return false;
 		if (a_DoT_x_MinuS_b < 0)
 			return true;
 		return false;
@@ -2092,12 +2105,12 @@ namespace SF {
 		}
 	}
 
-	static inline void Print_Inequalities() {
+	static inline void Print_Constraints() {
 		for (int i = 0; i < PD_m; i++) {
 			cout << i << ")";
 			for (int j = 0; j < PD_n; j++)
 				cout << setw(PP_SETW) << PD_A[i][j];
-			cout << "\t<=" << setw(PP_SETW) << PD_b[i] << endl;
+			cout << "\t" << (PD_isEquation[i] ? "==" : "<=") << setw(PP_SETW) << PD_b[i] << endl;
 		}
 	}
 
@@ -2153,6 +2166,35 @@ namespace SF {
 		}
 
 		cout << "}";
+	}
+
+	static inline void Print_Number_of_edges(PT_vector_T x) {
+		int mneh;
+		unsigned long long me;
+
+		mneh = 0;
+		for (int i = 0; i < PD_m; i++) {
+			if (PD_isEquation[i])
+				continue;
+			if (PointBelongsHyperplane_i(x, i, PP_EPS_POINT_IN_HALFSPACE))
+				mneh++;
+		}
+
+		if (mneh == PD_neq)
+			me = (unsigned long long) mneh;
+		else {
+
+#ifdef PP_DEBUG
+			if (mneh > 62) {
+				cout << "\nError in Print_Number_of_edges(): It is impossible to calculate binomial coefficient for number of including hyperplanes mneh = "
+					<< mneh << " > 62" << endl;
+				exit(1);
+			}
+#endif // PP_DEBUG
+
+			me = BinomialCoefficient(mneh, PD_neq - 1);
+		}
+		cout << me << endl;
 	}
 
 	static inline void Print_Vector(PT_vector_T x) {
@@ -2366,7 +2408,7 @@ namespace PF {
 				cout << "Apex point inside recessive half-space " << i << "!" << endl;
 			}
 
-		cout << "Number of including hyperplanes: " << Number_IncludingHyperplanes(apexPoint, PP_EPS_ON_HYPERPLANE) << endl;
+		cout << "Number of including inequality hyperplanes: " << Number_IncludingNeHyperplanes(apexPoint, PP_EPS_ON_HYPERPLANE) << endl;
 		cout << "Apex point belongs to hyperplane: "; Print_HyperplanesIncludingPoint(apexPoint, PP_EPS_ZERO); cout << endl;
 #endif // PP_DEBUG
 

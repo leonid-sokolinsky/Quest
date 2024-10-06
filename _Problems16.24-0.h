@@ -23,52 +23,52 @@ LP problems were obtained using BSF-LPP-Generator.
 
 /*============================== rnd16-0 LP problem ==============================*
 #define PP_PROBLEM_NAME	"rnd16-0"
-#define PP_M 17		// Number of equations (number of rows in *.mtx)
-#define PP_N 33		// Number of variables (number of cols in *.mtx)
+#define PP_M 17		// Number of constraints
+#define PP_N 33		// Number of variables
 #define PP_MAX_OBJ_VALUE	27100
 //----------------------------------------------------------------------------------
 
 /*============================== rnd17-0 LP problem ==============================*
 #define PP_PROBLEM_NAME	"rnd17-0"
-#define PP_M	18		// Number of equations (number of rows in *.mtx)
-#define PP_N	35		// Number of variables (number of cols in *.mtx)
+#define PP_M	18		// Number of constraints
+#define PP_N	35		// Number of variables
 #define PP_MAX_OBJ_VALUE	31000
 //----------------------------------------------------------------------------------
 
 
 /*============================== rnd18-0 LP problem ==============================*
 #define PP_PROBLEM_NAME	"rnd18-0"
-#define PP_M	19		// Number of equations (number of rows in *.mtx)
-#define PP_N	37		// Number of variables (number of cols in *.mtx)
+#define PP_M	19		// Number of constraints
+#define PP_N	37		// Number of variables
 #define PP_MAX_OBJ_VALUE	31000
 //----------------------------------------------------------------------------------
 
 
 /*============================== rnd19-0 LP problem ==============================*
 #define PP_PROBLEM_NAME	"rnd19-0"
-#define PP_M	20		// Number of equations (number of rows in *.mtx)
-#define PP_N	39		// Number of variables (number of cols in *.mtx)
+#define PP_M	20		// Number of constraints
+#define PP_N	39		// Number of variables
 #define PP_MAX_OBJ_VALUE	31000
 //----------------------------------------------------------------------------------
 
 /*============================== rnd20-0 LP problem ==============================*/
 #define PP_PROBLEM_NAME	"rnd20-0"
-#define PP_M	21		// Number of equations (number of rows in *.mtx)
-#define PP_N	41		// Number of variables (number of cols in *.mtx)
+#define PP_M	21		// Number of constraints
+#define PP_N	41		// Number of variables
 #define PP_MAX_OBJ_VALUE 41900
 //----------------------------------------------------------------------------------
 
 /*============================== rnd22-0 LP problem ==============================*
 #define PP_PROBLEM_NAME	"rnd22-0"
-#define PP_M	23		// Number of equations (number of rows in *.mtx)
-#define PP_N	45		// Number of variables (number of cols in *.mtx)
+#define PP_M	23		// Number of constraints
+#define PP_N	45		// Number of variables
 #define PP_MAX_OBJ_VALUE 50500
 //----------------------------------------------------------------------------------
 
 /*============================== rnd24-0 LP problem ==============================*
 #define PP_PROBLEM_NAME	"rnd24-0"
-#define PP_M	25		// Number of equations (number of rows in *.mtx)
-#define PP_N	49		// Number of variables (number of cols in *.mtx)
+#define PP_M	25		// Number of constraints
+#define PP_N	49		// Number of variables
 #define PP_MAX_OBJ_VALUE 59900
 //----------------------------------------------------------------------------------
 
