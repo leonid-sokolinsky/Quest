@@ -20,29 +20,12 @@ This source code has been produced with using BSF-skeleton
 #define PP_PATH "../../Set-of-LP-Problems/Rnd-LP/"
 
 /**
-#include "_Problems15-1.h"
-#define PP_PATH "../../Set-of-LP-Problems/Rnd-LP/"
-
-/**
-#include "_Problems16.24-0.h"
-#define PP_PATH "../../Set-of-LP-Problems/Rnd-LP/"
-
-/**
-#include "_Problems20-1.h"
-#define PP_PATH "../../Set-of-LP-Problems/Rnd-LP/"
-
-/**
-#include "_Problems-Cone-LP.h"
-#define PP_PATH "../../LP-Cone-Problems/"
+#include "_Problems-Miscellaneous.h"
+#define PP_PATH "../../Set-of-LP-Problems/Miscellaneous-LP/"
 
 /**/
 #include "_Problems-NetLib-LP.h"
 #define PP_PATH "../../Set-of-LP-Problems/NetLib-LP/"
-
-/**
-#include "_Problems-Miscellaneous.h"
-#define PP_PATH "../../Set-of-LP-Problems/Miscellaneous-LP/"
-
 /*---------------------------------------------------------------------*/
 
 #define PP_METHOD_NAME "Quest"
@@ -51,10 +34,13 @@ This source code has been produced with using BSF-skeleton
 //#define PP_DEBUG
 //#define PP_MATRIX_OUTPUT
 #define PP_SAVE_RESULT
-//#define MPS_MIN_OF_OBJECTIVE_FUNCTION
 
 //=========================== Problem Parameters =========================
-#define PP_MM					(2*PP_M+2*PP_N)	// Maximal number of inequalities
+#ifdef PP_MPS_FORMAT
+#define PP_MM							(PP_M+3*PP_N)		// Maximal number of constraints
+#else
+#define PP_MM							(PP_M+2*PP_N)		// Maximal number of constraints
+#endif // PP_MPS_FORMAT
 #define PP_MAX_ITER_COUNT		10000000000		// Maximal count of iterations
 #define PP_DBL_MAX				1E+308			// Highest value
 

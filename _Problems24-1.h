@@ -14,7 +14,7 @@ LP problems were obtained using BSF-LPP-Generator.
 
 /*============================== rnd24-0 LP problem ==============================*
 #define PP_PROBLEM_NAME	"rnd24-0"
-#define PP_M 25		// Number of constraints
+#define PP_MM 25		// Number of constraints
 #define PP_N 49		// Number of variables
 //------------------------------------------------------------------
 #define PP_EPS_ZERO					1E-9			// Accuracy for comparison with zero
@@ -24,7 +24,7 @@ LP problems were obtained using BSF-LPP-Generator.
 
 /*============================== rnd24-1-1 LP problem ==============================*
 #define PP_PROBLEM_NAME	"rnd24-1-1"
-#define PP_M 25		// Number of constraints
+#define PP_MM 25		// Number of constraints
 #define PP_N 49		// Number of variables
 //------------------------------------------------------------------
 #define PP_EPS_ZERO					1E-9			// Accuracy for comparison with zero
@@ -34,7 +34,7 @@ LP problems were obtained using BSF-LPP-Generator.
 
 /*============================== rnd24-1-2 LP problem ==============================*
 #define PP_PROBLEM_NAME	"rnd24-1-2"
-#define PP_M 25		// Number of constraints
+#define PP_MM 25		// Number of constraints
 #define PP_N 49		// Number of variables
 //------------------------------------------------------------------
 #define PP_EPS_ZERO					1E-9			// Accuracy for comparison with zero
@@ -44,7 +44,7 @@ LP problems were obtained using BSF-LPP-Generator.
 
 /*============================== rnd24-1-3 LP problem ==============================*
 #define PP_PROBLEM_NAME	"rnd24-1-3"
-#define PP_M 25		// Number of constraints
+#define PP_MM 25		// Number of constraints
 #define PP_N 49		// Number of variables
 //------------------------------------------------------------------
 #define PP_EPS_ZERO					1E-9			// Accuracy for comparison with zero
@@ -54,7 +54,7 @@ LP problems were obtained using BSF-LPP-Generator.
 
 /*============================== rnd24-1-4 LP problem ==============================*
 #define PP_PROBLEM_NAME	"rnd24-1-4"
-#define PP_M 25		// Number of constraints
+#define PP_MM 25		// Number of constraints
 #define PP_N 49		// Number of variables
 //------------------------------------------------------------------
 #define PP_EPS_ZERO					1E-9			// Accuracy for comparison with zero
@@ -64,7 +64,7 @@ LP problems were obtained using BSF-LPP-Generator.
 
 /*============================== rnd24-1-5 LP problem ==============================*
 #define PP_PROBLEM_NAME	"rnd24-1-5"
-#define PP_M 25		// Number of constraints
+#define PP_MM 25		// Number of constraints
 #define PP_N 49		// Number of variables
 //------------------------------------------------------------------
 #define PP_EPS_ZERO					1E-9			// Accuracy for comparison with zero

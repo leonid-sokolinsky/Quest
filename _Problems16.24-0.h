@@ -11,8 +11,8 @@ LP problems were obtained using BSF-LPP-Generator.
 
 //=========================== Method Parameters =========================
 #define PP_EPS_ZERO					1E-10	// Accuracy for comparison with zero
-#define PP_EPS_COS					1E-5	// Precision for cos == 1
-#define PP_EPS_TINY_PPROJ_VEC		1E-13	// Tiny pseudoprojecting vector
+
+
 
 #define PP_EPS_CFACTOR		1E-9
 #define PP_ETA_TO_APEX		100000000	// Distance from apex base to apex point => vertex
@@ -23,14 +23,14 @@ LP problems were obtained using BSF-LPP-Generator.
 
 /*============================== rnd16-0 LP problem ==============================*
 #define PP_PROBLEM_NAME	"rnd16-0"
-#define PP_M 17		// Number of constraints
+#define PP_MM 17		// Number of constraints
 #define PP_N 33		// Number of variables
 #define PP_MAX_OBJ_VALUE	27100
 //----------------------------------------------------------------------------------
 
 /*============================== rnd17-0 LP problem ==============================*
 #define PP_PROBLEM_NAME	"rnd17-0"
-#define PP_M	18		// Number of constraints
+#define PP_MM	18		// Number of constraints
 #define PP_N	35		// Number of variables
 #define PP_MAX_OBJ_VALUE	31000
 //----------------------------------------------------------------------------------
@@ -38,7 +38,7 @@ LP problems were obtained using BSF-LPP-Generator.
 
 /*============================== rnd18-0 LP problem ==============================*
 #define PP_PROBLEM_NAME	"rnd18-0"
-#define PP_M	19		// Number of constraints
+#define PP_MM	19		// Number of constraints
 #define PP_N	37		// Number of variables
 #define PP_MAX_OBJ_VALUE	31000
 //----------------------------------------------------------------------------------
@@ -46,28 +46,28 @@ LP problems were obtained using BSF-LPP-Generator.
 
 /*============================== rnd19-0 LP problem ==============================*
 #define PP_PROBLEM_NAME	"rnd19-0"
-#define PP_M	20		// Number of constraints
+#define PP_MM	20		// Number of constraints
 #define PP_N	39		// Number of variables
 #define PP_MAX_OBJ_VALUE	31000
 //----------------------------------------------------------------------------------
 
 /*============================== rnd20-0 LP problem ==============================*/
 #define PP_PROBLEM_NAME	"rnd20-0"
-#define PP_M	21		// Number of constraints
+#define PP_MM	21		// Number of constraints
 #define PP_N	41		// Number of variables
 #define PP_MAX_OBJ_VALUE 41900
 //----------------------------------------------------------------------------------
 
 /*============================== rnd22-0 LP problem ==============================*
 #define PP_PROBLEM_NAME	"rnd22-0"
-#define PP_M	23		// Number of constraints
+#define PP_MM	23		// Number of constraints
 #define PP_N	45		// Number of variables
 #define PP_MAX_OBJ_VALUE 50500
 //----------------------------------------------------------------------------------
 
 /*============================== rnd24-0 LP problem ==============================*
 #define PP_PROBLEM_NAME	"rnd24-0"
-#define PP_M	25		// Number of constraints
+#define PP_MM	25		// Number of constraints
 #define PP_N	49		// Number of variables
 #define PP_MAX_OBJ_VALUE 59900
 //----------------------------------------------------------------------------------

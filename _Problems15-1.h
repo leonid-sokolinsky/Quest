@@ -10,19 +10,16 @@ LP problems were obtained using BSF-LPP-Generator.
 #pragma once
 
 //=========================== Method Parameters =========================
-#define PP_EPS_ZERO					1E-10	// Accuracy for comparison with zero
-#define PP_EPS_COS					1E-5	// Precision for cos == 1
-#define PP_EPS_TINY_PPROJ_VEC		1E-13	// Tiny pseudoprojecting vector
-
-#define PP_EPS_CFACTOR		1E-9
-#define PP_ETA_TO_APEX		1E+6	// Distance from apex base to apex point
+#define PP_EPS_ZERO					1E-10		// Accuracy for comparison with zero
+#define PP_EPS_CFACTOR				(PP_EPS_ZERO*1000)	// Precision of calculating apex-point
+#define PP_EPS_POINT_IN_HALFSPACE	PP_EPS_ZERO	// Precision for point to be in halfspace
+#define PP_EPS_ON_HYPERPLANE		PP_EPS_ZERO	// Accuracy of belonging to hyperplane
+#define PP_ETA_TO_APEX				10000		// Distance from apex base to apex point
 //-----------------------------------------------------------------------------
-#define PP_MAX_B_NO_CORRECT				200		// Maximum b that does not require correction
-#define PP_EPS_POINT_IN_RND_HALFSPACE	1E-2	// Precision for random inequality in PointInPolytope()
-#define PP_M 16		// Number of constraints
-#define PP_N 31		// Number of variables
+#define PP_MM 16	// Number of rows in *.mtx
+#define PP_N 31		// Number of cols in *.mtx
 
-/*============================== rnd15-0 LP problem ================================*
+/*============================== rnd15-0 LP problem ================================*/
 #define PP_PROBLEM_NAME	"rnd15-0"
 #define PP_MAX_OBJ_VALUE	18400
 //----------------------------------------------------------------------------------
@@ -32,7 +29,7 @@ LP problems were obtained using BSF-LPP-Generator.
 #define PP_MAX_OBJ_VALUE	21000
 //----------------------------------------------------------------------------------
 
-/*============================== rnd15-1-2 LP problem ==============================*/
+/*============================== rnd15-1-2 LP problem ==============================*
 #define PP_PROBLEM_NAME	"rnd15-1-2"
 #define PP_MAX_OBJ_VALUE	20800
 //----------------------------------------------------------------------------------

@@ -15,7 +15,7 @@ LP problems were obtained using BSF-LPP-Generator.
 
 /*============================== cone3-0 LP problem ==============================*/
 #define PP_PROBLEM_NAME	"cone3-0"
-#define PP_M 11		// Number of constraints
+#define PP_MM 11		// Number of constraints
 #define PP_N 14		// Number of variables
 //#define PP_EPS_ZERO		1E-11	// Accuracy for comparison with zero
 //#define PP_ETA_TO_APEX	0		// Distance from apex base to apex point

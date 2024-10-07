@@ -173,9 +173,10 @@ void PC_bsf_MapF_3(PT_bsf_mapElem_T* mapElem, PT_bsf_reduceElem_T_3* reduceElem,
 void PC_bsf_ParametersOutput(PT_bsf_parameter_T parameter) {
 	cout << "=================================================== " << PP_METHOD_NAME << " ====================================================" << endl;
 	cout << "Problem name: " << PD_problemName << endl;
+
 #ifdef PP_MPS_FORMAT
 	cout << "Input format: MPS" << endl;
-	cout << "m =\t" << PD_m << "\tn = " << PD_n << endl;
+	cout << "m =\t" << PD_m << "\tn = " << PD_n << " (after conversion into standard form)" << endl;
 #else
 	cout << "Input format: MTX (with elimination of free variables)" << endl;
 	cout << "Before elimination: m =\t" << PP_M << "\tn = " << PP_N << endl;
@@ -704,9 +705,21 @@ namespace SF {
 				break;
 			default:
 				if (BSF_sv_mpiRank == BSF_sv_mpiMaster)
-					cout << "MPS__ReadRows: error - unpredictable row type " << row[i_row].type << endl;
+					cout << "MPS__MakeProblem error:Unpredictable row type " << row[i_row].type << endl;
 				return false;
 			}
+		}
+
+		if (PD_m != PP_M) {
+			if (BSF_sv_mpiRank == BSF_sv_mpiMaster)
+				cout << "MPS__MakeProblem error: Number of constraints in mps-file = " << PD_m << " not equal to PP_M = " << PP_M << ".\n";
+			return false;
+		}
+
+		if (PD_n != PP_N) {
+			if (BSF_sv_mpiRank == BSF_sv_mpiMaster)
+				cout << "MPS__MakeProblem error: Number of variables in mps-file = " << PD_n << " not equal to PP_M = " << PP_N << ".\n";
+			return false;
 		}
 
 		for (int j = 0; j < PD_n; j++) { // Adding lower bounds
@@ -1493,13 +1506,13 @@ namespace SF {
 
 		if (noc != PP_N) {
 			if (BSF_sv_mpiRank == BSF_sv_mpiMaster)
-				cout << "Invalid input data: PP_N must be = " << noc << "\n";
+				cout << "MTX_Load_A error: PP_N must be = " << noc << "\n";
 			return false;
 		}
 
 		if (nor != PP_M) {
 			if (BSF_sv_mpiRank == BSF_sv_mpiMaster)
-				cout << "Invalid input data: PP_M must be = " << nor << "\n";
+				cout << "MTX_Load_A error:  PP_M must be = " << nor << "\n";
 			return false;
 		}
 
@@ -2376,11 +2389,12 @@ namespace PF {
 		Vector_DivideByNumber(PD_c, Vector_Norm(PD_c), e_c);
 
 		for (int i = 0; i < PD_m; i++) {
-			a_dot_e_c = Vector_DotProduct(PD_A[i], e_c);
-			if (a_dot_e_c <= PP_EPS_ZERO) {// not recessive!
 				PD_recessive_tag[i] = false;
-				continue;
-			}
+				if (PD_isEquation[i])
+					continue;
+				a_dot_e_c = Vector_DotProduct(PD_A[i], e_c);
+				if (a_dot_e_c <= PP_EPS_ZERO) // not recessive!
+					continue;
 			PD_recessive_tag[i] = true;
 			a_dot_innerPoint = Vector_DotProduct(PD_A[i], innerPont);
 			cFactor = (PD_b[i] - a_dot_innerPoint) / a_dot_e_c;

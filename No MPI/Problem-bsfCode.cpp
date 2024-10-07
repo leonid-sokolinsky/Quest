@@ -173,9 +173,10 @@ void PC_bsf_MapF_3(PT_bsf_mapElem_T* mapElem, PT_bsf_reduceElem_T_3* reduceElem,
 void PC_bsf_ParametersOutput(PT_bsf_parameter_T parameter) {
 	cout << "=================================================== " << PP_METHOD_NAME << " ====================================================" << endl;
 	cout << "Problem name: " << PD_problemName << endl;
+
 #ifdef PP_MPS_FORMAT
 	cout << "Input format: MPS" << endl;
-	cout << "m =\t" << PD_m << "\tn = " << PD_n << endl;
+	cout << "m =\t" << PD_m << "\tn = " << PD_n << " (after conversion into standard form)" << endl;
 #else
 	cout << "Input format: MTX (with elimination of free variables)" << endl;
 	cout << "Before elimination: m =\t" << PP_M << "\tn = " << PP_N << endl;
@@ -687,26 +688,38 @@ namespace SF {
 		for (int i_row = 0; i_row < n_row; i_row++) {
 			switch (row[i_row].type) {
 			case 'E':
-				if (!MPS_AddEquation(row[i_row].name, row[i_row].RHS_value, column, n_col)) 
+				if (!MPS_AddEquation(row[i_row].name, row[i_row].RHS_value, column, n_col))
 					return false;
 				break;
 			case 'G':
-				if (!MPS_AddInequality_G(row[i_row].name, row[i_row].RHS_value, column, n_col)) 
+				if (!MPS_AddInequality_G(row[i_row].name, row[i_row].RHS_value, column, n_col))
 					return false;
 				break;
 			case 'L':
-				if (!MPS_AddInequality_L(row[i_row].name, row[i_row].RHS_value, column, n_col)) 
+				if (!MPS_AddInequality_L(row[i_row].name, row[i_row].RHS_value, column, n_col))
 					return false;
 				break;
 			case 'N':
-				if (!MPS_AddObjectiveFunction(row[i_row].name, column, n_col)) 
+				if (!MPS_AddObjectiveFunction(row[i_row].name, column, n_col))
 					return false;
 				break;
 			default:
 				if (BSF_sv_mpiRank == BSF_sv_mpiMaster)
-					cout << "MPS__ReadRows: error - unpredictable row type " << row[i_row].type << endl;
+					cout << "MPS__MakeProblem error:Unpredictable row type " << row[i_row].type << endl;
 				return false;
 			}
+		}
+
+		if (PD_m != PP_M) {
+			if (BSF_sv_mpiRank == BSF_sv_mpiMaster)
+				cout << "MPS__MakeProblem error: Number of constraints in mps-file = " << PD_m << " not equal to PP_M = " << PP_M << ".\n";
+			return false;
+		}
+
+		if (PD_n != PP_N) {
+			if (BSF_sv_mpiRank == BSF_sv_mpiMaster)
+				cout << "MPS__MakeProblem error: Number of variables in mps-file = " << PD_n << " not equal to PP_M = " << PP_N << ".\n";
+			return false;
 		}
 
 		for (int j = 0; j < PD_n; j++) { // Adding lower bounds
@@ -1008,12 +1021,12 @@ namespace SF {
 					return false;
 				}
 				PD_A[PD_m][column[i_col].j] = -column[i_col].value;
-				}
+			}
 		PD_b[PD_m] = -RHS_value;
 		PD_m++;
 		assert(PD_m < PP_MM);
 		return true;
-			}
+	}
 
 	static inline bool MPS_AddInequality_L(PT_MPS_name_T rowName, double RHS_value, PT_MPS_column_T* column, int n_col) {
 		for (int i_col = 0; i_col < n_col; i_col++)
@@ -1493,13 +1506,13 @@ namespace SF {
 
 		if (noc != PP_N) {
 			if (BSF_sv_mpiRank == BSF_sv_mpiMaster)
-				cout << "Invalid input data: PP_N must be = " << noc << "\n";
+				cout << "MTX_Load_A error: PP_N must be = " << noc << "\n";
 			return false;
 		}
 
 		if (nor != PP_M) {
 			if (BSF_sv_mpiRank == BSF_sv_mpiMaster)
-				cout << "Invalid input data: PP_M must be = " << nor << "\n";
+				cout << "MTX_Load_A error:  PP_M must be = " << nor << "\n";
 			return false;
 		}
 
@@ -2376,11 +2389,12 @@ namespace PF {
 		Vector_DivideByNumber(PD_c, Vector_Norm(PD_c), e_c);
 
 		for (int i = 0; i < PD_m; i++) {
-			a_dot_e_c = Vector_DotProduct(PD_A[i], e_c);
-			if (a_dot_e_c <= PP_EPS_ZERO) {// not recessive!
-				PD_recessive_tag[i] = false;
+			PD_recessive_tag[i] = false;
+			if (PD_isEquation[i])
 				continue;
-			}
+			a_dot_e_c = Vector_DotProduct(PD_A[i], e_c);
+			if (a_dot_e_c <= PP_EPS_ZERO) // not recessive!
+				continue;
 			PD_recessive_tag[i] = true;
 			a_dot_innerPoint = Vector_DotProduct(PD_A[i], innerPont);
 			cFactor = (PD_b[i] - a_dot_innerPoint) / a_dot_e_c;
