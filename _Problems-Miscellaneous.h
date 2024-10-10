@@ -202,7 +202,7 @@ Initial feasible points for these problems were calculated using BIP algorithm
 #define PP_M 105		// Number of rows in *.mtx
 #define PP_N 110		// Nnumber of cols in *.mtx
 #define PP_MAX_OBJ_VALUE	1848.437080568196
-#define PP_ETA_TO_APEX		10000	// Distance from apex base to apex point
+#define PP_ETA_TO_APEX		1000000	// Distance from apex base to apex point
 //------------------------------------------------------------------------------
 
 /*==============================================================================*/
