@@ -6,16 +6,27 @@ Prefix: PP
 Author: Leonid B. Sokolinsky
 This include file is part of Problem-Parameters.h
 Initial feasible points for these problems were calculated using BIP algorithm
-==============================================================================*/
+================================================================================*/
 #pragma once
 
-//=========================== problem Parameters ========================
-#define PP_EPS_ZERO					1E-11				// Accuracy for comparison with zero
-#define PP_EPS_CFACTOR				(PP_EPS_ZERO*1000)	// Precision of calculating apex-point
-#define PP_EPS_POINT_IN_HALFSPACE	PP_EPS_ZERO			// Precision for point to be in halfspace
-#define PP_EPS_ON_HYPERPLANE		PP_EPS_ZERO			// Accuracy of belonging to hyperplane
-//-------------------------------------------------------------------------------
+//=========================== problem Parameters ===============================
+#define PP_EPS_ZERO					1E-12					// Accuracy for comparison with zero
+#define PP_EPS_PROJECTION			(PP_EPS_ZERO*10)		// Precision to calculate projection
+#define PP_EPS_ON_HYPERPLANE		(PP_EPS_PROJECTION*10)	// Accuracy of belonging to hyperplane
+#define PP_EPS_CFACTOR				(PP_EPS_ZERO*1)		// Precision of calculating apex-point
+//------------------------------------------------------------------------------
 
+/*============================== nguyen5 LP problem ============================*/
+#define PP_PROBLEM_NAME	"nguyen5"
+#define PP_MPS_FORMAT
+#define PP_M 4		// Number of constrains
+#define PP_N 5		// Number of variables
+#define PP_MAX_OBJ_VALUE 		21.45497290910011
+#define PP_ETA_TO_APEX			0				// Distance from apex base to apex point
+//-------------------------- Compilation Modes ---------------------------------
+#define PP_MAXPROJECTION
+//------------------------------------------------------------------------------
+ 
 /*============================== simpleCube LP problem ==========================*
 #define PP_MPS_FORMAT
 #define PP_PROBLEM_NAME	"simpleCube"
@@ -27,7 +38,7 @@ Initial feasible points for these problems were calculated using BIP algorithm
 #define PP_N 6	// Number of cols in *.mtx
 #endif
 #define PP_MAX_OBJ_VALUE 		60000
-#define PP_ETA_TO_APEX			10000				// Distance from apex base to apex point
+#define PP_ETA_TO_APEX			100000				// Distance from apex base to apex point
 //-------------------------------------------------------------------------------
 
 /*============================== cubeInHyperplane LP problem ===================*
@@ -35,11 +46,11 @@ Initial feasible points for these problems were calculated using BIP algorithm
 #define PP_PROBLEM_NAME	"cubeInHyperplane"
 #define PP_M 4		// Number of constraints
 #define PP_N 4		// Number of variables
-#define PP_MAX_OBJ_VALUE 		30000
-#define PP_ETA_TO_APEX			10000				// Distance from apex base to apex point
+#define PP_MAX_OBJ_VALUE 		90000
+#define PP_ETA_TO_APEX			0				// Distance from apex base to apex point
 //-------------------------------------------------------------------------------
 
-/*============================== simple1FxVar LP problem =============================*
+/*============================== simple1FxVar LP problem ========================*
 // Simple LP problem & x_1=150
 #define PP_MPS_FORMAT
 #define PP_PROBLEM_NAME	"simple1FxVar"
@@ -60,7 +71,7 @@ Initial feasible points for these problems were calculated using BIP algorithm
 #define PP_N 7		// Nnumber of cols in *.mtx
 #endif
 #define PP_MAX_OBJ_VALUE 	55000
-#define PP_ETA_TO_APEX		10000				// Distance from apex base to apex point
+#define PP_ETA_TO_APEX		0				// Distance from apex base to apex point
 //-------------------------------------------------------------------------------
 
 /*============================== simple1.1 LP problem ===========================*
@@ -197,12 +208,12 @@ Initial feasible points for these problems were calculated using BIP algorithm
 #define PP_ETA_TO_APEX		10000	// Distance from apex base to apex point
 //------------------------------------------------------------------------------
 
-/*============================== rnd5-100 LP problem ===========================*/
+/*============================== rnd5-100 LP problem ===========================*
 #define PP_PROBLEM_NAME	"rnd5-100"
 #define PP_M 105		// Number of rows in *.mtx
 #define PP_N 110		// Nnumber of cols in *.mtx
-#define PP_MAX_OBJ_VALUE	1848.437080568196
-#define PP_ETA_TO_APEX		1000000	// Distance from apex base to apex point
+#define PP_MAX_OBJ_VALUE	1848.43708056819355078915
+#define PP_ETA_TO_APEX		0	// Distance from apex base to apex point
 //------------------------------------------------------------------------------
 
 /*==============================================================================*/

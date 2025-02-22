@@ -12,7 +12,7 @@ LP problems were obtained using BSF-LPP-Generator.
 //=========================== Method Parameters =========================
 #define PP_EPS_ZERO					1E-10		// Accuracy for comparison with zero
 #define PP_EPS_CFACTOR				(PP_EPS_ZERO*1000)	// Precision of calculating apex-point
-#define PP_EPS_POINT_IN_HALFSPACE	PP_EPS_ZERO	// Precision for point to be in halfspace
+#define PP_EPS_ON_HYPERPLANE	PP_EPS_ZERO	// Precision for point to be in halfspace
 #define PP_EPS_ON_HYPERPLANE		PP_EPS_ZERO	// Accuracy of belonging to hyperplane
 #define PP_ETA_TO_APEX				10000		// Distance from apex base to apex point
 //-----------------------------------------------------------------------------
