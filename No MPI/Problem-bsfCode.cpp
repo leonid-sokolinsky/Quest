@@ -238,6 +238,7 @@ void PC_bsf_ProblemOutput(PT_bsf_reduceElem_T* reduceResult, int reduceCounter, 
 	cout << "// Computed objective value: " << ObjF(parameter.x) << endl;
 	cout << "// Maximal objective value:  " << PP_MAX_OBJ_VALUE << endl;
 	cout << "// Relative error = " << setprecision(3) << RelativeError(PP_MAX_OBJ_VALUE, ObjF(parameter.x)) << setprecision(PP_SETW / 2) << endl;
+	cout << "// Distance to polytope: " << setprecision(24) << Distance_PointToPolytope(parameter.x) << endl;
 	cout << "// Number of including inequality hyperplanes: " << Number_IncludingNeHyperplanes(parameter.x, PP_EPS_ON_HYPERPLANE) << endl;
 	cout << "================================================" << endl;
 
@@ -245,16 +246,6 @@ void PC_bsf_ProblemOutput(PT_bsf_reduceElem_T* reduceResult, int reduceCounter, 
 	if (MTX_SavePoint(parameter.x, PP_MTX_POSTFIX_U0))
 		cout << "Starting boundary point is saved into file *.u0" << endl;
 #endif // PP_SAVE_RESULT
-
-	cout << "u0 = ";
-	Print_Vector(parameter.x);	cout << endl;
-	if (PointBelongsToPolytope(parameter.x, PP_EPS_ON_HYPERPLANE))
-		cout << "u0 in polytope.\n";
-	else
-		cout << "u0 NOT in polytope!!!\n";
-	cout << "Distance to polytope: " << setprecision(2) << Distance_PointToPolytope(parameter.x) << endl;
-	cout << "// Number of including inequality hyperplanes: " << Number_IncludingNeHyperplanes(parameter.x, PP_EPS_ON_HYPERPLANE) << endl;
-	//cout << "u0 on hyperplanes: "; Print_HyperplanesIncludingPoint(parameter.x, PP_EPS_ON_HYPERPLANE);
 
 } // end PC_bsf_ProblemOutput
 
@@ -308,16 +299,6 @@ void PC_bsf_ProcessResults(PT_bsf_reduceElem_T* reduceResult, int reduceCounter,
 
 	Vector_Addition(parameter->x, reduceResult->projectingVector, parameter->x);
 
-#ifdef PP_DEBUG
-	double dist = Distance_PointToPoint(parameter->x, x_prev);
-	if (dist > 0)
-		if (dist < DBL_EPSILON * 10) {
-			cout << "PC_bsf_ProcessResults error: The distance between the approximations is less than the machine epsilon! You should increase PP_EPS_PROJECTION." << endl;
-			*exit = true;
-			return;
-		}
-#endif
-
 	/*DEBUG PC_bsf_ProcessResults**
 	#ifdef PP_DEBUG
 	cout << "_______________________________ " << PD_iterNo << " ___________________________________\n";
@@ -331,6 +312,16 @@ void PC_bsf_ProcessResults(PT_bsf_reduceElem_T* reduceResult, int reduceCounter,
 		*exit = true;
 		return;
 	}
+
+#ifdef PP_DEBUG
+	double dist = Distance_PointToPoint(parameter->x, x_prev);
+	if (dist > 0)
+		if (dist < DBL_EPSILON * 10) {
+			cout << "PC_bsf_ProcessResults error: The distance between the approximations is less than the machine epsilon! You should increase PP_EPS_PROJECTION." << endl;
+			*exit = true;
+			return;
+		}
+#endif
 
 #ifdef PP_DEBUG
 	static bool notFirsIteration;
@@ -2644,7 +2635,7 @@ namespace PF {
 		Vector_MultiplyByNumber(e_c, max_cDistance, direction);
 		Vector_Addition(innerPont, direction, apexPoint);
 
-#ifdef PP_DEBUG
+/*#ifdef PP_DEBUG
 		cout << "Apex point:\t";
 		for (int j = 0; j < PF_MIN(PP_OUTPUT_LIMIT, PD_n); j++)
 			cout << setw(PP_SETW) << apexPoint[j];
@@ -2663,6 +2654,6 @@ namespace PF {
 		cout << "Number of including inequality hyperplanes: " << Number_IncludingNeHyperplanes(apexPoint, PP_EPS_ON_HYPERPLANE) << endl;
 		cout << "Apex point belongs to hyperplane: "; Print_HyperplanesIncludingPoint(apexPoint, PP_EPS_ON_HYPERPLANE); cout << endl;
 #endif // PP_DEBUG
-
+/**/
 	}
 }
