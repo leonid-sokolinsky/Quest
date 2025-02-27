@@ -19,11 +19,11 @@ This source code has been produced with using BSF-skeleton
 #include "../_Problems10-1.h"
 #define PP_PATH "../../Set-of-LP-Problems/Rnd-LP/"
 
-/**/
+/**
 #include "../_Problems-Miscellaneous.h"
 #define PP_PATH "../../Set-of-LP-Problems/Miscellaneous-LP/"
 
-/**
+/**/
 #include "../_Problems-NetLib-LP.h"
 #define PP_PATH "../../Set-of-LP-Problems/NetLib-LP/"
 
@@ -34,14 +34,14 @@ This source code has been produced with using BSF-skeleton
 //-------------------------- Compilation Modes ---------------------------------
 #define PP_DEBUG
 //#define PP_MATRIX_OUTPUT
-#define PP_SAVE_RESULT
+//#define PP_SAVE_RESULT
 
 //================================ Problem Parameters ==========================
 #define PP_MM				(PP_M+2*PP_N)		// Maximal number of constraints
 
 #define PP_MAX_ITER_COUNT	10000000000		// Maximal count of iterations
 //-------------------------- Input/Outpoot Parameters ---------------------------
-#define PP_OUTPUT_LIMIT	4 // Number of Elements to output
+#define PP_OUTPUT_LIMIT	3 // Number of Elements to output
 #define PP_SETW 24
 //------------------------- Matrix format ----------------
 #define PP_INFINITY			1E+308		// Highest bound in *_hi.mtx

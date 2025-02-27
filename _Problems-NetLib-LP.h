@@ -131,13 +131,13 @@ This include file is part of Problem-Parameters.h
 #define PP_N 41	// Number of variables in mps-file (after conversion to standard form)
 #define PP_MAX_OBJ_VALUE 1749.9001299062057129526866493726
 //--------------------------------------------------------------------------
-#define PP_EPS_ZERO					1E-11				// Accuracy for comparison with zero
-#define PP_EPS_CFACTOR				PP_EPS_ZERO			// Precision of calculating apex-point
-#define PP_EPS_ON_HYPERPLANE		(PP_EPS_ZERO*100)	// Accuracy of belonging to hyperplane
-#define PP_EPS_PROJECTION			PP_EPS_ZERO			// Precision to calculate projection
-#define PP_ETA_TO_APEX				10000					// Distance from apex base to apex point
+#define PP_EPS_ZERO					1E-13					// Accuracy for comparison with zero
+#define PP_EPS_PROJECTION			(PP_EPS_ZERO*10)		// Precision to calculate projection
+#define PP_EPS_ON_HYPERPLANE		(PP_EPS_PROJECTION*10)	// Accuracy of belonging to hyperplane
+#define PP_EPS_CFACTOR				1E-5					// Precision of calculating apex-point
+#define PP_ETA_TO_APEX				0					// Distance from apex base to apex point
 //--------------------------------------------------------------------------
-//#undef PP_BIPROJECTION
+#define PP_MAXPROJECTION
 //--------------------------------------------------------------------------
 // Elapsed time: 94
 // Number of iterations: 26855743
