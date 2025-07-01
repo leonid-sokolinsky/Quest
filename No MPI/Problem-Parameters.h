@@ -34,7 +34,7 @@ This source code has been produced with using BSF-skeleton
 //-------------------------- Compilation Modes ---------------------------------
 #define PP_DEBUG
 //#define PP_MATRIX_OUTPUT
-//#define PP_SAVE_RESULT
+#define PP_SAVE_RESULT
 
 //================================ Problem Parameters ==========================
 #define PP_MM				(PP_M+2*PP_N)		// Maximal number of constraints
@@ -53,6 +53,7 @@ This source code has been produced with using BSF-skeleton
 #define PP_MTX_POSTFIX_LO	"_lo.mtx"
 #define PP_MTX_POSTFIX_Z0	"_z0.mtx" // Starting boundary point
 #define PP_MTX_POSTFIX_U0	"_u0.mtx" // Found boundary point
+#define PP_MTX_POSTFIX_X0	"_x0.mtx" // Found boundary point
 //------------------------- MPS format ----------------
 #define PP_MPS_NAME_LENGTH	9
 #define PP_MPS_PREFIX		"lp_"

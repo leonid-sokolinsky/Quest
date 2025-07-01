@@ -24,6 +24,6 @@ static PT_vector_T PD_hi;			// Higher bound
 static PT_vector_T PD_lo;			// Lower bound
 static PT_column_T PD_norm_a;		// Column of norms of matrix rows
 static bool PD_recessive_tag[PP_MM];		// Tag of recessivity
-static PT_vector_T PD_apexPoint;	// Apex point
+static PT_vector_T PD_projectedPoint;	// Apex point
 //========================== Input/Output ====================================
 static string PD_problemName;
