@@ -35,9 +35,9 @@ Initial feasible points for these problems were calculated using BIP algorithm
 // Number of including inequality hyperplanes: 1
 //------------------------------------------------------------------------------
 
-/*============================== simpleCube LP problem ==========================*
+/*============================== cube LP problem ===============================*
 #define PP_MPS_FORMAT
-#define PP_PROBLEM_NAME	"simpleCube"
+#define PP_PROBLEM_NAME	"cube"
 #ifdef PP_MPS_FORMAT
 #define PP_M 3		// Number of constraints
 #define PP_N 3		// Number of variables
